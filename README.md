@@ -5,8 +5,12 @@ Shaders tested on MPC-HC video player (EVR-CP) on integrated graphics.
 
 Effects:
 - Pixelate
-- bStrobe (time based Effect)
 - Sobel Edge detection (in Luma)
+
+Tools:
+- barMask (custom borders + frame shift)
+- bStrobe (time based Effect)
+
 
 
 basic intro about pixel shaders and feedback here:
