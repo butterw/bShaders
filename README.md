@@ -4,7 +4,7 @@ This project aims at providing shaders (DirectX .hlsl files), tools and comparis
 Shaders tested on MPC-HC video player (EVR-CP) on integrated graphics.  
 
 Effects:
-- Pixelate
+- Pixelate (Mosaic)
 - Sobel Edge detection (in Luma)
 - Blur, multi-pass (Gaussian 9-tap, Kawase, Dual-Kawase)
 
