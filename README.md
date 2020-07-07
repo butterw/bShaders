@@ -6,7 +6,7 @@ Shaders tested on MPC-HC video player (EVR-CP) on integrated graphics.
 Effects:
 - Pixelate (Mosaic)
 - Sobel Edge detection (in Luma)
-- Blur, multi-pass (Gaussian 9-tap, Kawase, Dual-Kawase)
+- Gaussian Blur, multi-pass (Gaussian 9-tap, Kawase, Dual-Kawase, BoxBlur(3x) with adjustable size)
 
 
 Tools:
