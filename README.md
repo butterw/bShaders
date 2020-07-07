@@ -6,13 +6,15 @@ Shaders tested on MPC-HC video player (EVR-CP) on integrated graphics.
 Effects:
 - Pixelate
 - Sobel Edge detection (in Luma)
+- Blur, multi-pass (Gaussian 9-tap, Kawase, Dual-Kawase)
+
 
 Tools:
 - barMask (custom borders + frame shift)
 - bStrobe (time based Effect)
 
 
-
+---
 basic intro about pixel shaders and feedback here:
 https://forum.videohelp.com/threads/397797-Pixel-shaders-for-video-playback-%28-hlsl%29
 
