@@ -4,10 +4,10 @@
 2 MaskBox, 21 MaskBox (Dynamic Fill) 
 3 RatioLetterbox, 4 OffsetPillarbox, 
 5 Circular Left-Right Image Shift, 6 Shift_Mask, 7 Shift_NoMask,
-8 Downsample 2x with bilinear interpolation
+8 Downsample 2x fastest (output in top-left Quarter frame )
 0: Disable, -10 No Video.  
 
---- barMask.hlsl v1.3 by butterw (Border Mask + frame Shift, perf optimized) --- 
+--- barMask.hlsl v1.35 by butterw (Border Mask + frame Shift, perf optimized) --- 
 user configuration by modifying parameters in #define.
 You can create multiple versions of this shader based on your prefered parameter values/use cases (ex: BarMask-yx_916.hlsl, BarMask-LR_0.2.hlsl)
 tested in mpc-hc v1.9.6 (as pre-resize shader, also works fullscreen post-resize).
@@ -15,7 +15,8 @@ The borders are image zones, which means you can apply any effect on them (see b
 
 --- Changelog:
 v1.2: performance is optimized. fixed MaskCrop for negative offset.
-v1.3 (08/07/2020): Added border modes in pixels, bilinear Downsample 2x. Code cleanup. 
+v1.3 (08/07/2020): Added border modes in pixels, Downsample 2x. Code cleanup.
+v1.35 correction Mode 8: Fastest downsample 2x resize (1 texture, 1 arithmetic): more aliasing than with full bilinear resize.  
 */
 
 #define Red   float4(1, 0, 0, 0) //float4(255/255., 0, 0, 0)
@@ -116,7 +117,6 @@ float4 Shift_NoMask(float2 tex){
 	return tex2D(s0, tex-offset); //Shift without masking: observe (Left, Top) last pixel fill for offset>0.
 }
 
-#define Offset_bilinear float2(0.5, 0.5)
 /* --- Main --- */
 float4 main(float2 tex: TEXCOORD0): COLOR {	
 	// float4 c0 = tex2D(s0, tex); //! the compiler sometimes performs worse without this. 
@@ -148,8 +148,8 @@ float4 main(float2 tex: TEXCOORD0): COLOR {
 	return Shift_Mask(tex); 	//(1 texture, 2 arithmetic)
 #elif Mode==7	
 	return Shift_NoMask(tex); //(1 texture, 1 arithmetic)
-#elif Mode==8	//Downsample 2x with bilinear interpolation:	
-	return tex2D(s0, 2*tex + Offset_bilinear*p1); //(1 texture, 3 arithmetic) 
+#elif Mode==8	//Downsample 2x, Output in top-left quarter frame.   
+	return tex2D(s0, 2*tex); //(1 texture, 1 arithmetic) Fastest resize. More aliasing than with full bilinear resize.	 
 #endif
 
 	return tex2D(s0, tex); //c0; //No Effect (1 texture)
