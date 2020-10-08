@@ -10,14 +10,20 @@ Effects:
 
 
 Tools:
-- barMask (custom borders + frame shift)
-- bStrobe (time based Effect)
+- barMask (Custom Border Masks + frame shift)
+- bStrobe (Time-based Effect)
+- test_linearSampling (test whether Hardware Linear Sampling is working on gpu/driver)
+- test_LimitedRange (limited range tools using Avisynth and ffmpeg)
+   - bHighL.hlsl (out-of-range pixel highlighting)
 
+
+
+See also my shader gists: https://gist.github.com/butterw
+including .hook glsl-shaders for mpv: NoChroma, Frei-Chen Edge Detection (in Luma)
 
 ---
-basic intro about pixel shaders and feedback here:
+basic intro about hlsl/glsl pixel shaders here:
 https://forum.videohelp.com/threads/397797-Pixel-shaders-for-video-playback-%28-hlsl%29
 
-Mpc-hc unofficial shaders guide: https://forum.doom9.org/showthread.php?t=181584
+Mpc-hc/be unofficial shaders guide: https://forum.doom9.org/showthread.php?t=181584
 
-see also my shader gists: https://gist.github.com/butterw
