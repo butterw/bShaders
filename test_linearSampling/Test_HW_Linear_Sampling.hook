@@ -1,0 +1,13 @@
+//!HOOK MAIN
+//!BIND HOOKED
+//!DESC Test_HW_Linear_Sampling
+
+/* mpv shader by butterw 
+MAIN: rgba pre-resize */
+
+#define Red vec4(1, 0, 0, 1)
+vec4 hook(){
+    vec4 color = HOOKED_texOff(0.5); 
+	if (abs(color.r-0.5)<0.01) return Red;
+	return color;
+}
