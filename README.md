@@ -1,12 +1,14 @@
 # bShaders
 Effects/Filters for video playback 
 This project aims at providing shaders (DirectX .hlsl files), tools and comparison screenshots for realtime video Effects. The focus is on best implementation (and tuned parameter settings) of lightweight gpu shaders.
-Shaders tested on MPC-HC video player (EVR-CP) on integrated graphics.  
+Shaders tested on MPC-HC video player (EVR-CP) on integrated graphics. https://www.videohelp.com/software/Media-Player-Classic-Home-Cinema
+MPC-HC enables hardware-accelerated playback of local and internet videos (with youtube-dl) without requiring the installation of additional codecs. 
 
 Effects:
 - Pixelate (Mosaic)
 - Sobel Edge detection (in Luma)
 - Gaussian Blur, multi-pass (Gaussian 9-tap, Kawase, Dual-Kawase, BoxBlur(3x) with adjustable size)
+- Bicolor Dots
 
 
 Tools:
