@@ -1,12 +1,12 @@
 ## Noise/FilmGrain shaders
 
-Filmgrain (on a low intensity setting) improves perceptual quality of most videos. In particular content with low or no noise, (ex: the source noise may have been removed to at encoding to improve compressibility). It may also help mask some artefacts.
+Filmgrain (on a low intensity setting) improves perceptual quality of most videos. In particular content with low or no noise, ex: the source noise may have been removed at encoding to improve compressibility. It may also help mask artefacts.
 
-Note: Noise/Filmgrain shaders should be run after any sharpening shader (to avoid sharpening the noise), meaning they may have to run post-resize. 
-Known issue with mpc-hc/be: In fullscreen post-resize, the shader also gets applied to the black bars. Which is not desireable at all in this case ! 
+Note: The Noise/Filmgrain shader should be run after any sharpening shader (to avoid sharpening the noise). 
+Issue with mpc-hc/be EVR-CP: In fullscreen post-resize, the shader also gets applied to the black bars. This is not noticeable with normal noise intensities, however. 
 
 Performance of available hlsl filmgrain and noise shaders.
-- bNoise0.hlsl: (1 texture, 12 arithmetic)
+- bNoise.hlsl: (1 texture, 12 arithmetic)
 - mpv Noise.glsl port: (1 texture, 27 arithmetic) 
 - PS_Noise.hlsl mod: (1 texture, 29 arithmetic)
 - mpv FilmGrain.glsl port: (1 texture, 30 arithmetic) << this file
