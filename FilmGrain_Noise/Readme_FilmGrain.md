@@ -8,7 +8,7 @@ Note: The Noise/Filmgrain shader should be run after any sharpening shader (to a
 Issue with mpc-hc/be EVR-CP: In fullscreen post-resize, the shader also gets applied to the black bars. This is not noticeable with normal noise intensities, however. 
 These shaders use the Clock parameter available in mpc-hc/be (time in seconds since the program was launched) as randomization.
 
-# Performance of available hlsl Noise & Filmgrain shaders.
+### Performance of available hlsl Noise & Filmgrain shaders.
 - <B> bNoise.hlsl: (1 texture, 12 arithmetic)</B> << new lightweight Shader. histogram is fairly clean for typical noise Strengths. Centering the histogram costs one extra operation. 
 - mpv Noise.glsl port: (1 texture, 27 arithmetic), quite noisy histogram
 - PS_Noise.hlsl mod: (1 texture, 29 arithmetic), non symetrical distribution
