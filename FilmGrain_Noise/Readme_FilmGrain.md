@@ -13,7 +13,7 @@ These shaders use the Clock parameter available in mpc-hc/be (time in seconds si
 - mpv Noise.glsl port: (1 texture, 27 arithmetic), quite noisy histogram
 - PS_Noise.hlsl mod: (1 texture, 29 arithmetic), non symetrical distribution
 - <B> FilmGrain1.hlsl:</B> port from mpv FilmGrain.glsl: (1 texture, 30 arithmetic), truncated gaussian lobe with a width of approx 4sigma. 
-- semi-random grayscale noise.hlsl by janwillem32, i<4: (1 texture, 38 arithmetic). Patterning present below i<4 ! Clean histogram, but parasitic present at 32/255.
+- semi-random grayscale noise.hlsl by janwillem32, i<4: (1 texture, 38 arithmetic). Clean gaussian histogram. Patterning present with less iterations !
 - SweetFx.FilmGrain.hlsl v1.0: (1 texture, 46 arithmetic), 4 parameters, noise is multiplicative not additive, histogram not tested. 
 
 Some limited quality testing was done based on the output noise histogram, but more feedback would be welcome.
