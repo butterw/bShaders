@@ -1,0 +1,30 @@
+//!HOOK OUTPUT
+//!BIND HOOKED
+//!DESC CrossHatch
+
+/* pixi.CrossHatch (style Effect for video content)
+A different effect is produced based on HOOK point: LUMA (colors) or OUTPUT/MAIN (Red + 2 grays + White) 
+
+adapted to mpv .hook by butterw 
+from https://github.com/pixijs/pixi-filters/blob/master/filters/cross-hatch/src/crosshatch.frag (MIT License)
+*/
+
+#define White vec4(245, 245, 245, 255)/255.
+
+vec4 hook(){
+    vec4 color = White; //Background Color
+    float lum = length(HOOKED_texOff(0).rgb); //Gray
+
+    if ((lum < 1.) && mod(gl_FragCoord.x +gl_FragCoord.y, 10.) == 0.) // */*
+		color = vec4(0.25);
+
+    if ((lum < 0.75) && mod(gl_FragCoord.x -gl_FragCoord.y, 10.) == 0.) // *\*
+        color = vec4(1., 0, 0, 1); //Red
+
+    if ((lum < 0.50) && mod(gl_FragCoord.x + gl_FragCoord.y -5., 10.) == 0.) // */offset*
+        color = vec4(0.5);
+
+    if ((lum < 0.3) && mod(gl_FragCoord.x - gl_FragCoord.y -5., 10.) == 0.0)// *\offset* 
+        color = vec4(0.5);
+return color;
+}
