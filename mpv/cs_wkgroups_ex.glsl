@@ -3,7 +3,7 @@
 //!COMPUTE 32 32 //Workgroup bloc size(X, Y) is defined as X*Y threads, with 1 thread per input pixel.
 //!DESC Compute_WorkGroups
 
-/* mpv Compute Shader example by butterw
+/* mpv .hook Compute Shader example by butterw
 COMPUTE bw bh [tw th]
 
 Compute Shaders have a slightly different syntax vs fragment shaders. They don't return a pixel color value, output is done through out_image. 
