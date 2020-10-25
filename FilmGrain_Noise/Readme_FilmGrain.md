@@ -10,8 +10,8 @@ These shaders use the Clock parameter available in mpc-hc/be (time in seconds si
 
 ### Performance of available hlsl Noise & Filmgrain shaders.
 - <B> bNoise.hlsl: (1 texture, 12 arithmetic)</B> << new lightweight Shader. histogram is fairly clean for typical noise Strengths. Centering the histogram costs one extra operation. 
+- PS_Noise.hlsl mod/optim: (1 texture, 18 arithmetic), non symetrical distribution
 - mpv Noise.glsl port: (1 texture, 27 arithmetic), quite noisy histogram
-- PS_Noise.hlsl mod: (1 texture, 29 arithmetic), non symetrical distribution
 - <B> FilmGrain1.hlsl:</B> port from mpv FilmGrain.glsl: (1 texture, 30 arithmetic), truncated gaussian lobe with a width of approx 4sigma. 
 - semi-random grayscale noise.hlsl by janwillem32, i<4: (1 texture, 38 arithmetic). Clean gaussian histogram. Patterning present with less iterations !
 - SweetFx.FilmGrain.hlsl v1.0: (1 texture, 46 arithmetic), 4 parameters, noise is multiplicative not additive, histogram not tested. 
