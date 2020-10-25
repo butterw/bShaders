@@ -1,4 +1,4 @@
-//!HOOK LUMA //OUTPUT
+//!HOOK LUMA
 //!BIND HOOKED
 //!DESC dots
 
@@ -26,11 +26,12 @@ vec4 hook(){
     // return vec4(10*luma-5 + pattern());
 }
 
-//!HOOK NONE //CHROMA
+//!HOOK NONE 
 //!BIND HOOKED
 //!DESC NoChroma
 
-/* default hook: NONE, if activated zeroes out Chroma */
+/* default hook: NONE, 
+alt hook: CHROMA, zeroes out Chroma */
 vec4 hook() {
 	return vec4(0.5); //zeroes out Chroma: Luma Only
 }
