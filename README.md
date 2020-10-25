@@ -23,9 +23,9 @@ Tools:
    - bHighL.hlsl (out-of-range pixel highlighting)
 
 
-
 See also my shader gists: https://gist.github.com/butterw
-including .hook glsl-shaders for mpv: NoChroma, Frei-Chen Edge Detection (in Luma)
+including .hook glsl-shaders for mpv: NoChroma, Frei-Chen Edge Detection (in Luma).
+
 Mpv is an open-source cross-platform video player: https://mpv.io/installation/
  
 
