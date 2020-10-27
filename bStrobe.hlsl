@@ -22,7 +22,8 @@ Tested in mpc-hc v1.9.3:
 - Opening the player by double clicking a video starts Clock
 - Note that Opening another video or doing Pause/Stop does not reset Clock 
 
-Lightweight performance: (1 texture, 11 arithmetic).
+performance: (1 texture, 11 arithmetic).
+smooth_Strobe: with 1s fade-in
 */
 
 
@@ -39,9 +40,9 @@ float4 Strobe(float4 inputColor) {
 	return inputColor;
 }	
 
-float4 smooth_Strobe(float4 screenColor, float4 pixcolor, float tstart) {
-	/* blending (t_sm=1 second) between the pixel color and screenColor */
-	return lerp(pixcolor, screenColor, Clock-tstart); // blend: 1/t_sm *(Clock-tstart)   
+float4 smooth_Strobe(float4 pixcolor, float tstart) {
+	/* blending (t_sm=1 second) between the pixel color and ScreenColor */
+	return lerp(pixcolor, ScreenColor, saturate(Clock-tstart)); // blend: 1/t_sm *(Clock-tstart)   
 }
 
 float4 main(float2 tex: TEXCOORD0): COLOR {
@@ -51,6 +52,6 @@ float4 main(float2 tex: TEXCOORD0): COLOR {
 	if ((End>0 && Clock>End) || (End<0 && nRuns+1>(-End))) return c0;   //End Condition
 	
 	float tstart = Tfirst + nRuns*Tcycle;	
-	if (Clock>=tstart && Clock<tstart+Td) return smooth_Strobe(ScreenColor, c0, tstart); //ScreenColor; //return Strobe(ScreenColor);
+	if (Clock>=tstart && Clock<tstart+Td) return smooth_Strobe(c0, tstart); //ScreenColor; //return Strobe(ScreenColor);
 	return c0;
 }
