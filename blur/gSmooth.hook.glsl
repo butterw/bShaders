@@ -1,19 +1,18 @@
-/* Gaussian smoothing filter (3x3 or 5x5 kernel), hw: uses hw linear sampling
+/* Gaussian Smoothing filter (3x3 or 5x5 kernel), hw: uses hw linear sampling
+by butterw, License: GPL v3
  
-Gaussian 3x3 Kernel:
-[ 1 , 2 , 1 ]
-[ 2 , 4 , 2 ]
-[ 1 , 2 , 1 ]
-
-Select the HOOKs you want to apply (ex: MAIN, OUTPUT), NONE disables.
+Select the HOOKs you want to apply (ex: MAIN, OUTPUT), NONE disables:
+- hw.gSmooth3: 3x3 Gaussian kernel using hw linear sampling (4 texture fetches) 
+- gSmooth3:    3x3 Gaussian kernel, full (9 texture fetches)
+- hw.gSmooth5: 2-pass 5x5 Gaussian kernel using hw linear sampling (2*3 texture fetches)
+For stronger blurs use blurGaussR.hook (hw.Gaussian9x9 downscaled by 2) and blurGauss.hook (hw.Gaussian9x9) for subsequent passes.
 */
 
 //!HOOK NONE_MAIN
 //!BIND HOOKED
 //!DESC hw.gSmooth3
 
-vec4 hook(){ //gSmooth3_hw (3x3 gaussian kernel) using hw linear sampling, tex:4 
-	// if (HOOKED_pos.x<0.5) return HOOKED_texOff(0);
+vec4 hook(){ //hw.gSmooth3 (3x3 gaussian kernel) using hw linear sampling, tex:4 
 	vec4 blur = HOOKED_texOff(vec2(-0.5, -0.5));
 	blur+= HOOKED_texOff(vec2(-0.5, 0.5));  
 	blur+= HOOKED_texOff(vec2(0.5, -0.5));
@@ -25,6 +24,13 @@ vec4 hook(){ //gSmooth3_hw (3x3 gaussian kernel) using hw linear sampling, tex:4
 //!HOOK MAIN
 //!BIND HOOKED
 //!DESC gSmooth3
+
+/* Gaussian 3x3 Kernel:
+sigma=0.85, in multi-pass sigma=sigma*sqrt(2)
+[ 1 , 2 , 1 ]
+[ 2 , 4 , 2 ]
+[ 1 , 2 , 1 ]
+*/
 
 vec4 hook(){ //gSmooth3 (3x3 gaussian kernel), tex:9
 	if (HOOKED_pos.x<0.5) return HOOKED_texOff(0);
