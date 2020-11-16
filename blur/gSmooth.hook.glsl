@@ -2,13 +2,14 @@
 by butterw, License: GPL v3
  
 Select the HOOKs you want to apply (ex: MAIN, OUTPUT), NONE disables:
-- hw.gSmooth3: 3x3 Gaussian kernel using hw linear sampling (4 texture fetches) 
+blurring should be performed pre-upscaling for maximum effect (use MAIN)
+- hw.gSmooth3: default, 3x3 Gaussian kernel using hw linear sampling (4 texture fetches) 
 - gSmooth3:    3x3 Gaussian kernel, full (9 texture fetches)
 - hw.gSmooth5: 2-pass 5x5 Gaussian kernel using hw linear sampling (2*3 texture fetches)
 For stronger blurs use blurGaussR.hook (hw.Gaussian9x9 downscaled by 2) and blurGauss.hook (hw.Gaussian9x9) for subsequent passes.
 */
 
-//!HOOK NONE_MAIN
+//!HOOK MAIN
 //!BIND HOOKED
 //!DESC hw.gSmooth3
 
@@ -21,7 +22,7 @@ vec4 hook(){ //hw.gSmooth3 (3x3 gaussian kernel) using hw linear sampling, tex:4
 }
 /*--------------------------------------------------------------- */
 
-//!HOOK MAIN
+//!HOOK NONE_MAIN
 //!BIND HOOKED
 //!DESC gSmooth3
 
