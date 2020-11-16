@@ -24,13 +24,13 @@ float4 main(float2 tex: TEXCOORD0): COLOR {
 
 
 #if Mode==1 //hw.gSmooth3(4 texture, 7 arithmetic)
-	#define po 0.499 //default: 0.5, 0.499: doesn't blur if hw linear sampling isn't supported. 
+    #define po 0.499 //default: 0.5, 0.499: doesn't blur if hw linear sampling isn't supported. 
     blur = tex2D(s0, tex + p1*float2(-po, -po));
     blur+= tex2D(s0, tex + p1*float2( po, -po));
     blur+= tex2D(s0, tex + p1*float2(-po, po));
     blur+= tex2D(s0, tex + p1*float2( po, po));
     blur*= 0.25;
-    return 5*(orig-blur); //debug-output: if hw linear sampling isn't supported, returns a black screen with po 0.499   
+    return 10*abs(orig-blur); //debug with po 0.499: if hw linear sampling isn't supported: 100% black screen 
     return blur;
 #endif
 
