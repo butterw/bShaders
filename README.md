@@ -38,3 +38,5 @@ basic intro about hlsl/glsl pixel shaders here:
 https://forum.videohelp.com/threads/397797-Pixel-shaders-for-video-playback-%28-hlsl%29
 
 Unofficial video player shaders guide: https://forum.doom9.org/showthread.php?t=181584
+
+![](./assets/Posterize.vs.Posterize2_8-b.png)
