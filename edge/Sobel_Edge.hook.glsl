@@ -15,7 +15,6 @@ Smoothing may not be necessary, especially if a smooth scaler is in use (Mitchel
 
 default output is Dark on White_limit background.
 set the threshold to achieve good detection.
-
 */
 
 //!HOOK LUMA
@@ -39,8 +38,7 @@ vec4 hook(){ //hw.gSmooth3 (3x3 gaussian kernel) using hw linear sampling, tex:4
 
 #define T_Sobel 0.15 //Threshold: higher means less detection on screen
 
-#define texo(uv) HOOKED_texOff(uv).r // #define texo(uv) HOOKED_tex(HOOKED_pos + HOOKED_pt*uv)
-// #define T_Sobel_sq (T_Sobel*T_Sobel)
+#define texo(uv) HOOKED_texOff(uv).r
 vec4 hook(){ //8 tex
 	float c8 = texo(1);
 	      c8-= texo(-1);
@@ -68,8 +66,8 @@ vec4 hook(){ //8 tex
 
 #define T_Sobel 0.3 //Threshold: higher means less detection on screen
 
-#define texo(uv) HOOKED_texOff(uv) // #define texo(uv) HOOKED_tex(HOOKED_pos + HOOKED_pt*uv) //.r
 #define CoefLuma vec4(0.212656, 0.715158, 0.072186, 0) // BT.709 & sRBG luma coef (HDTV, SDR Monitors)
+#define texo(uv) HOOKED_texOff(uv)
 vec4 hook(){ 
 	vec4 c8 = texo(1);
 	     c8-= texo(-1);
