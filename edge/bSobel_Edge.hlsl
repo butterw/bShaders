@@ -3,14 +3,14 @@
 #define WhiteLimit 180/255. // <1. clamp output to avoid bright white 
 #define SatFactor 1.8 //2.43 //0: gray, 1: no change, >1: Saturated Colors
 
-/* --- bSobel_Edge by butterw v1.3 
+/* --- bSobel_Edge by butterw v1.31 
 Sobel Edge Detection in Luma (3x3 kernel) with adjustable Threshold
 tested in mpc-hc (8 texture, 25 arithmetic)
 
-Typically provides the best quality used post-upscale.   
+Use with high-res input or post-upscale.   
 
 Changelog v1.3:
-- added Inverted Mode (Dark lines on White_limit background)
+- added Inverted Mode (Dark lines on WhiteLimit background)
 - added Cartoon Mode  (Dark Edges + Saturated Color)
 --- */
 
@@ -31,13 +31,13 @@ float4 Sobel_Edge(float2 tex){
 	g.x = dot(c8 + c3 -2*c4 + 2*c5, CoefLuma);
 	float4 c7 = tex2D(s0, tex +float2(0,  py));		
 	float4 c2 = tex2D(s0, tex +float2(0, -py));
-	g.y = dot(c8 -c3 + 2*c7  -2*c2, CoefLuma); //c1
+	g.y = dot(c8 -c3 + 2*c7  -2*c2, CoefLuma); 
 	float edge = length(g); 
 	
 	#if Mode == 0	//Sobel
 		return (edge>T_Sobel) ? min(edge, WhiteLimit): 0;    
 	#elif Mode == 1 //Inverted_Sobel: dark grey on white background 
-		return (edge<T_Sobel) ? WhiteLimit: 1-1.4*max(edge, 0.25); // Inverted: 	
+		return (edge<T_Sobel) ? WhiteLimit: 1-1.4*max(edge, 0.25);
 	#else //Cartoon Mode: Dark Edges + Saturated Color 
 		float4 color = tex2D(s0, tex);
 		float gray = dot(color, CoefLuma);//1/3. 
@@ -47,6 +47,5 @@ float4 Sobel_Edge(float2 tex){
 }
 
 float4 main(float2 tex: TEXCOORD0): COLOR {
-	// float4 c0 = tex2D(s0, tex);
 	return Sobel_Edge(tex);
 }
