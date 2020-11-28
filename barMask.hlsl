@@ -2,7 +2,8 @@
 /* barMask Mode (default 1): 1 MaskCrop (custom borders + re-center), 11 Maskcrop2 (symmetrical: Bottom, Right), 12 Custom Borders (no re-center)
 111 Symmetrical Borders defined in pixels (BorderPixels), 112 Custom Borders defined in pixels 
 2 MaskBox, 21 MaskBox (Dynamic Fill) 
-3 RatioLetterbox, 4 OffsetPillarbox, 
+3 RatioLetterbox, 4 OffsetPillarbox,
+43 PillarboxFill43, 44 PillarboxFill
 5 Circular Left-Right Image Shift, 6 Shift_Mask, 7 Shift_NoMask,
 8 Downsample 2x fastest (output in top-left Quarter frame )
 0: Disable, -10 No Video.  
@@ -16,7 +17,8 @@ The borders are image zones, which means you can apply any effect on them (see b
 --- Changelog:
 v1.2: performance is optimized. fixed MaskCrop for negative offset.
 v1.3 (08/07/2020): Added border modes in pixels, Downsample 2x. Code cleanup.
-v1.35 correction Mode 8: Fastest downsample 2x resize (1 texture, 1 arithmetic): more aliasing than with full bilinear resize.  
+v1.35 correction Mode 8: Fastest downsample 2x resize (1 texture, 1 arithmetic): more aliasing than with full bilinear resize.
+v1.4 added lightweight PillarboxFill Modes: 43 for 4/3 source content with or without burnt-in black bars and 44 for widescreen input
 */
 
 #define Red   float4(1, 0, 0, 0) //float4(255/255., 0, 0, 0)
@@ -99,6 +101,22 @@ float4 OffsetPillarbox(float2 tex){ //##4 (1 texture, 9 arithmetic)
 	// return (within_border) ? tex2D(s0, tex -float2(Xshift, 0)): BorderColor; //(1 texture, 9 arithmetic)
 }
 
+#define mAR 1.32 //4/3. fill-mask Aspect Ratio
+float4 PillarboxFill43(float2 tex){ //##43 Fills in sidebars
+// can be used pre-resize if input has burnt-in sidebars. For 4/3 videos without burnt-in sidebars: use post-resize (works only with EVR-CP)  
+	float wx = 0.5*(1 -H/W *mAR);// calculate border width
+	if (tex.x <=wx) return 0.35*tex2D(s0, float2(tex.x+wx, 0.05));
+	if (1-wx <=tex.x) return 0.35*tex2D(s0, float2(tex.x-wx, 0.05));	
+	return tex2D(s0, tex);
+}
+
+float4 PillarboxFill(float2 tex){ //##44 pre-resize shader: crop a widescreen video (to ex: 4/3) with top-pixel sidebar fill
+	float wx = 0.5*(1 -H/W * mAR);// Calculate Border Width
+	if (tex.x <=wx || 1-wx <=tex.x) return 0.35*tex2D(s0, float2(tex.x, 0.05));
+	return tex2D(s0, tex);
+}
+
+
 /* -##5 Circular Left-Right Image Shift (1 texture, 3 arithmetic) */
 float4 Circular_LR_Shift(float2 tex){
 	tex.x = frac(tex.x - Xshift);
@@ -142,6 +160,10 @@ float4 main(float2 tex: TEXCOORD0): COLOR {
 	return RatioLetterbox(tex);
 #elif Mode==4  //Borders Left and Right + Offset: 
 	return OffsetPillarbox(tex);
+#elif Mode==43  //Dynamic-Filled Pillarbox Borders: 
+	return PillarboxFill43(tex);
+#elif Mode==44
+	return PillarboxFill(tex);
 #elif Mode==5	
 	return Circular_LR_Shift(tex); //(1 texture, 3 arithmetic)
 #elif Mode==6	
