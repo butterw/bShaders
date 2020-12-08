@@ -36,11 +36,9 @@ Mpv:
 - NoChroma.hook (Grayscale source shader)
 - simple examples for embedded textures and compute shaders
 
-
 See also my shader gists: https://gist.github.com/butterw
+
 ---
-
-
 basic intro about hlsl/glsl pixel shaders here:
 https://forum.videohelp.com/threads/397797-Pixel-shaders-for-video-playback-%28-hlsl%29
 
