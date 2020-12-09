@@ -13,7 +13,7 @@ Avisynth scripts:
 ColorBarsHD:
 
 The difference between an expanded and a non expanded limited range is most visible on White.
-* avs_rec709_720p-002.png:
+* avs_rec709_720p-full.png:
 ![](https://github.com/butterw/bShaders/blob/master/test_LimitedRange/avs_rec709_720p-002.png?raw=true)
 * avs_pc.709_720p-001.png:
 ![](https://github.com/butterw/bShaders/blob/master/test_LimitedRange/avs_pc.709_720p-001.png?raw=true)
