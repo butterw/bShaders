@@ -10,11 +10,12 @@ how to use shaders in mpv: https://forum.doom9.org/showthread.php?p=1926639#post
 
 Effects:
 - Pixelate (Mosaic)
-- Edge detection (in Luma): Sobel, Prewitt, Frei-Chen 
+- Edge detection (in Luma): Sobel, Prewitt, Frei-Chen
+- FilmGrain/Noise (bNoise.hlsl lightweight additive noise pixel shader and others)  
 
 Blur:
-- single-pass gSmooth (Gaussian Blur 3x3, hw.3)
-- multi-pass (Gaussian 7-tap, hw.5, hw.9, quarter-frame hw.9, Kawase, Dual-Kawase, BoxBlur(3x) with adjustable size)
+- Single-pass gSmooth (Gaussian Blur 3x3, hw.3)
+- Multi-pass (Gaussian 7-tap, hw.5, hw.9, quarter-frame hw.9, Kawase, Dual-Kawase, BoxBlur(3x) with adjustable size)
 - Blurred pillarbox borders (fill_bb.avs avisynth script)
 
 Art/Style Effect for Video content (vs Film):
