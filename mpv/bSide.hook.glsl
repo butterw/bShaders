@@ -1,15 +1,15 @@
 //!HOOK MAIN
 //!BIND HOOKED
-//!DESC bSide_ex
+//!DESC bSide
 
-/* bSide.hook by butterw
+/* bSide.hook by butterw v0.1
 hook: MAIN, OUTPUT, LUMA, NATIVE
 Apply different effects to different parts of the screen.
 
 Input is typically a single video file. To display multiple video files use ffmpeg (or avisynth) as input, ex:
 mpv --lavfi-complex="[vid1][vid2]hstack[vo]" "b:\Videos\file1.mp4" --external-file="b:\Videos\file2.mp4"
 goal is typically for comparison purpose: No Effect (O) vs. Shader
-OR to simulataneously display 4 different image channels/effects (ex: ROGB)
+OR to simultaneously display 4 different image channels/effects (ex: ROGB)
 
 Input >> Shader Output: 
 Splitscreen:  A | B      
