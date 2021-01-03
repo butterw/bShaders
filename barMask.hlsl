@@ -5,11 +5,13 @@
 22 2x2 Quarter-frames, RYGB channels output  
 3 RatioLetterbox, 4 OffsetPillarbox,
 43 PillarboxFill43, 44 PillarboxFill
-5 Circular Left-Right Image Shift, 6 Shift_Mask, 7 Shift_NoMask,
+5 Circular Left-Right Image Shift
+51 Mirror-X, 52 Mirror-Y
+6 Shift_Mask, 7 Shift_NoMask,
 8 Downsample 2x fastest (output in top-left Quarter frame )
 0: Disable, -10 No Video.  
 
---- barMask.hlsl v1.5 by butterw (Border Mask + frame Shift, perf optimized) --- 
+--- barMask.hlsl v1.6 by butterw (Border Mask + frame Shift, perf optimized) --- 
 user configuration by modifying parameters in #define.
 You can create multiple versions of this shader based on your prefered parameter values/use cases (ex: BarMask-yx_916.hlsl, BarMask-LR_0.2.hlsl)
 tested in mpc-hc v1.9.6 (as pre-resize shader, also works fullscreen post-resize).
@@ -21,6 +23,7 @@ v1.3 (08/07/2020): Added border modes in pixels, Downsample 2x. Code cleanup.
 v1.35 correction Mode 8: Fastest downsample 2x resize (1 texture, 1 arithmetic): more aliasing than with full bilinear resize.
 v1.4 added lightweight PillarboxFill Modes: 43 for 4/3 source content with or without burnt-in black bars and 44 for widescreen input
 v1.5 added Modes 22: 2x2 Quarter-frames output corresponding to RYGB channels (based on mode 8)
+v1.6 added Modes 51: Mirror-X, 52: Mirror-Y
 */
 
 #define Red   float4(1, 0, 0, 0) //float4(255/255., 0, 0, 0)
@@ -177,8 +180,12 @@ float4 main(float2 tex: TEXCOORD0): COLOR {
 	return PillarboxFill(tex);
 #elif Mode==5	
 	return Circular_LR_Shift(tex); //(1 texture, 3 arithmetic)
+#elif Mode==51 
+	return tex2D(s0, float2(1-tex.x, tex.y)); //Mirror-X
+#elif Mode==52 //(1 texture, 1 arithmetic)
+	return tex2D(s0, float2(tex.x, 1-tex.y)); //Mirror-Y		
 #elif Mode==6	
-	return Shift_Mask(tex); 	//(1 texture, 2 arithmetic)
+	return Shift_Mask(tex); //(1 texture, 2 arithmetic)
 #elif Mode==7	
 	return Shift_NoMask(tex); //(1 texture, 1 arithmetic)
 #elif Mode==8	//Downsample 2x, Output in top-left quarter frame.   
