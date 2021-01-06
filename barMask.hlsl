@@ -2,7 +2,7 @@
 /* barMask Mode (default 1): 1 MaskCrop (custom borders + re-center), 11 Maskcrop2 (symmetrical: Bottom, Right), 12 Custom Borders (no re-center)
 111 Symmetrical Borders defined in pixels (BorderPixels), 112 Custom Borders defined in pixels 
 2 MaskBox, 21 MaskBox (Dynamic Fill)
-22 2x2 Quarter-frames, RYGB channels output  
+22 2x2 Quarter-frames, RoGB (or RYGB) channels output  
 3 RatioLetterbox, 4 OffsetPillarbox,
 43 PillarboxFill43, 44 PillarboxFill
 5 Circular Left-Right Image Shift
@@ -11,7 +11,7 @@
 8 Downsample 2x fastest (output in top-left Quarter frame )
 0: Disable, -10 No Video.  
 
---- barMask.hlsl v1.6 by butterw (Border Mask + frame Shift, perf optimized) --- 
+--- barMask.hlsl v1.61 by butterw (Border Mask + frame Shift, perf optimized) --- 
 user configuration by modifying parameters in #define.
 You can create multiple versions of this shader based on your prefered parameter values/use cases (ex: BarMask-yx_916.hlsl, BarMask-LR_0.2.hlsl)
 tested in mpc-hc v1.9.6 (as pre-resize shader, also works fullscreen post-resize).
@@ -24,6 +24,7 @@ v1.35 correction Mode 8: Fastest downsample 2x resize (1 texture, 1 arithmetic):
 v1.4 added lightweight PillarboxFill Modes: 43 for 4/3 source content with or without burnt-in black bars and 44 for widescreen input
 v1.5 added Modes 22: 2x2 Quarter-frames output corresponding to RYGB channels (based on mode 8)
 v1.6 added Modes 51: Mirror-X, 52: Mirror-Y
+v1.61 mode22: RoGB is default instead of RYGB
 */
 
 #define Red   float4(1, 0, 0, 0) //float4(255/255., 0, 0, 0)
@@ -168,7 +169,8 @@ float4 main(float2 tex: TEXCOORD0): COLOR {
 							 G B */
 	float4 c1 = tex2D(s0, 2*tex -step(0.5, tex) + eps);
 	if (tex.x<0.5) c1 = (tex.y<0.5) ? c1.r: c1.g; //float4(c1.r, 0, 0, 0): float4(0, c1.g, 0, 0); 
-	else c1 = (tex.y<0.5) ? dot(c1, CoefLuma): c1.b;
+	else c1 = (tex.y<0.5) ? c1: c1.b; //for RoGB
+	//else c1 = (tex.y<0.5) ? dot(c1, CoefLuma): c1.b; //for RYGB
 	return c1;
 #elif Mode==3  //Borders Top and Bottom: 
 	return RatioLetterbox(tex);
