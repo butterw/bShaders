@@ -7,7 +7,7 @@ ffm4b.bat: ffmpeg lossless commands (Windows bat file), incl. changing video bit
 Avisynth scripts:
 * gen_ColorBarsHD.avs 
 * LumaHistogram.avs (dynamic display of a video file luma histogram) 
-* Create luma_stats.avs: generates a .csv of per frame Luma statistics of a video file (Y: min, 0.4%Low, med, mean,	0.4%High, max, mean_diff with previous frame)
+* Luma_stats.avs: generates a .csv of per frame Luma statistics of a video file (Y: min, 0.4%Low, med, mean,	0.4%High, max, mean_diff with previous frame)
 * generate ColorBarsHD test pattern with Avisynth+
 
 ColorBarsHD:
