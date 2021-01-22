@@ -1,9 +1,9 @@
-## bInsert.py Lossless Video Insertion Script for Avidemux
+## bInsert.py Lossless Video Insertion Script for Avidemux (v0.1)
 # https://github.com/butterw/bShaders/tree/master/test_LimitedRange
 # 
-# tested in Avidemux 2.7.7dev (run with File>Project Script or add to Custom menu)
+# tested in Avidemux 2.7.7dev (run with File>Project Script... or add to Custom menu)
 # 
-# Insert a video file into your file at the current position 
+# Insert a video file into your file before the current position 
 # If you have edited your file, save it and reload it before proceeding !
 # for no re-encoding mode:
 # - Insertion point must be on a Keyframe !
@@ -16,8 +16,8 @@ nSegm = ed.nbSegments()
 if nSegm!=1:
 	if not nSegm: msg_str="No video loaded !"
 	else: 
-		msg_str="Multiple Segments detected !\n"
-		msg_str="Please Save and Reload Your File"
+		msg_str ="Multiple Segments detected !\n"
+		msg_str+="Please Save and Reload Your File"
 	gui.displayError("bInsert", msg_str)
 	return 
 
@@ -35,7 +35,7 @@ except:
 adm.seekKeyFrame(99999)
 adm.markerA=0; adm.markerB=end0 #reset Markers
 if not adm.appendVideo(fname_ins): raise("Cannot append " +str(fname_ins))
-ff01 = ed.getNextKFramePts()
+ff01 = ed.getNextKFramePts(-1)
 end = ed.getVideoDuration()
 adm.clearSegments()
 adm.addSegment(0, 0, I)
