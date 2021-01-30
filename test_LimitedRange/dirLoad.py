@@ -14,7 +14,7 @@ inputFolder = gui.dirSelect(header_str + "(" +ext+ "): Select folder")
 flist = get_folder_content(inputFolder, ext)
 if len(flist): 
 	print(header_str, len(flist), ext)
-	adm.loadVideo(flist[0])
+	if not adm.loadVideo(flist[0]): raise("Cannot load " + str(flist[0]))
 	for fname in flist[1:]:   
 		if not adm.appendVideo(fname): raise("! Cannot append " +str(fname))
 	print(header_str + " done, Segments:", ed.nbSegments(), ed.getVideoDuration()) 
