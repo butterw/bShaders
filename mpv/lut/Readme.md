@@ -15,15 +15,15 @@ The required conversion from the available Lut formats to .hook hex-texture can 
 return texture(CLUT, 0.75*color.rgb + 0.125); //lutSize: 4<br/>
 correction applied: (lutSize - 1.0)/lutSize *oldCoord + 1.0/(2.0 *lutSize)<br/>
 
-* hald-2-identity_8x8_cube4.png (8bit haldclut level-2 identity png image, 8x8 pixels, equivalent to a 4x4x4 rgb cube):<br/>
+#### Identity Image
+hald-2-identity_8x8_cube4.png (8bit haldclut level-2 identity png image, 8x8 pixels, equivalent to a 4x4x4 rgb cube):<br/>
 <img src="https://github.com/butterw/bShaders/blob/master/mpv/lut/hald-2-identity_8x8_cube4.png?raw=true" width="100" height="100">
 
 By using an identity image as input, the output corresponds to the transformation lut (which can then be saved as png image).<br/>
 The output, when an identity lut transformation is applied, is the same as the input.
 
-
 ### Main Clut formats
-* Haldclut square .png image (24 or 48bit rgb), ex: hald level 8, 512x512 image (equivalent to cube-64: 64*64*64 colors)
+* Haldclut square .png image (24 or 48bit rgb), ex: hald level 8, 512x512 image (equivalent to cube-64: 64x64x64 colors)
 * Adobe .cube, text based format with floating point r g b values, typ in the [0, 1.0] range.
 
 The cube corresponds to a flattened (line-by-line) haldclut image.<br/>
