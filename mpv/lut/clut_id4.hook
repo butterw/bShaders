@@ -3,12 +3,15 @@
 //!BIND CLUT
 //!DESC CLut Identity-4
 
-/* a 4x4x4 rgb identity lut shader for mpv by butterw (increases contrast)
-this is an example of a 3D color look-up-table (CLUT) shader in mpv */ 
+/* a 4x4x4 rgb identity lut shader for mpv by butterw (v0.1) 
+this is an example of a 3D color look-up-table (CLUT) shader in mpv 
+https://developer.nvidia.com/gpugems/gpugems2/part-iii-high-quality-rendering/chapter-24-using-lookup-tables-accelerate-color
+*/ 
 
 vec4 hook(){
 	vec4 color = HOOKED_texOff(0);
-	return texture(CLUT, color.rgb);
+	// return texture(CLUT, color.rgb); //without correction increases contrast  
+	return texture(CLUT, 0.75*color.rgb + 0.125); // coord correction: (lutSize - 1.0)/lutSize x oldCoord + 1.0/(2.0 x lutSize)
 }
 
 //created with butterw/lut2hook.py from id-4.cube
