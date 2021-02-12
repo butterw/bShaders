@@ -6,7 +6,7 @@ Mpv video player can apply text-based lut transformations through ffmpeg --vf:
 mpv --vf=lut3d=clut.cube video.mp4
 However, this is quite cpu intensive at higher resolutions/framerates, so a shader gpu-based approach is preferable.
 
-# MPV Lut Shaders
+### MPV Lut Shaders
 Mpv allows embedded (1D or 3D) textures in shaders, which can be used for fast LUT transformations. 
 For Color Luts, RGB 3D textures with 3D linear interpolation can be used.
 ! The texture format (FBO) must be supported by the gpu driver, which can be an issue cross-platform for floating point formats (vs lightweight rgba8 texture format which is simple to encode and widely supported).
@@ -20,7 +20,7 @@ correction applied: (lutSize - 1.0)/lutSize *oldCoord + 1.0/(2.0 *lutSize)
 By using an identity image as input, the output corresponds to the transformation lut (which can then be saved as png image).
 The output, when an identity lut transformation is applied, is the same as the input.
 
-# Main Clut formats
+### Main Clut formats
 * Haldclut square .png image (24 or 48bit rgb), ex: hald level 8, 512x512 image (equivalent to cube-64: 64*64*64 colors)
 * Adobe .cube, text based format with floating point r g b values, typ in the [0, 1.0] range.
 The cube corresponds to a flattened (line-by-line) haldclut image. 
