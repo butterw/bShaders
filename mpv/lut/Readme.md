@@ -9,9 +9,9 @@ However, this is quite cpu intensive at higher resolutions/framerates, so a shad
 ### MPV Lut Shaders
 Mpv allows embedded (1D or 3D) textures in shaders, which can be used for fast LUT transformations.<br/>
 For Color Luts, RGB 3D textures with 3D linear interpolation can be used.<br/>
-! The texture format (FBO) must be supported by the gpu driver, which can be an issue cross-platform for floating point formats (vs lightweight rgba8 texture format which is simple to encode and widely supported). <br/>
-The required conversion from the available Lut formats to .hook hex-texture can be done using a Python script. <br/>  
-! As mentionned in https://developer.nvidia.com/gpugems/gpugems2/part-iii-high-quality-rendering/chapter-24-using-lookup-tables-accelerate-color, a lookup coordinate correction is required in the shader. To avoid oversaturation in the case of a cube-4 identity lut:<br/>
+! The texture format (FBO) must be supported by the gpu driver, which can be an issue cross-platform for floating point formats (vs more lightweight rgba8 format which is simple to encode and widely supported). <br/>
+The required conversion from the available Lut formats to .hook hex-texture can be done through a Python script (I'm using Open-CV and Numpy for this). <br/>  
+! As mentionned in https://developer.nvidia.com/gpugems/gpugems2/part-iii-high-quality-rendering/chapter-24-using-lookup-tables-accelerate-color, a lookup coordinate correction is required in the shader. To avoid oversaturation-bias, ex for cube-4 identity lut:<br/>
 return texture(CLUT, 0.75*color.rgb + 0.125); //lutSize: 4<br/>
 correction applied: (lutSize - 1.0)/lutSize *oldCoord + 1.0/(2.0 *lutSize)
 
@@ -26,11 +26,11 @@ Filesize for cube-64: 200KB for haldclut png, 1MB for uncompressed rgb32, 2MB fo
 * hald-2-identity_8x8_cube4.png (8bit haldclut level-2 identity png image, 8x8 pixels, equivalent to a 4x4x4 rgb cube):<br/>
 <img src="https://github.com/butterw/bShaders/blob/master/mpv/lut/hald-2-identity_8x8_cube4.png?raw=true" width="100" height="100">
 
-By using an identity image as input, the output corresponds to the transformation lut (which can then be saved as png image).<br/>
-The output, when an identity lut transformation is applied, is the same as the input.
+By using an identity image of the desired size as input in a graphics program, the output corresponds to the transformation lut (which can then be saved as a png image).<br/>
+When an identity lut transformation is applied, the output should theoretically be the same as the input.
 
 #### ImageMagick (IM)
 The command line image processing program ImageMagick can be useful for haldcluts.<br/>
-* convert hald:8 id-8_512x512_cube64.png //generate a level:8 haldclut identity image
+* convert hald:8 id-8_512x512_cube64.png //generate a level 8 haldclut identity image
 * convert rose.png lut_sepia.png -hald-clut rose_sepia.png //apply the haldclut lut_sepia.png on the input image and save the output
-* magick cube:bw-4.cube[4] bw-4.png //convert .cube lut to an haldclut level 4 (64x64) .png
+* magick cube:bw-4.cube[2] bw-4.png //convert .cube lut to an haldclut level 2 (64x64) .png
