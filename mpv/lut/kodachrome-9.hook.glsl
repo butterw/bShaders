@@ -1,13 +1,20 @@
 //!HOOK MAIN
 //!BIND HOOKED
 //!BIND CLUT
-//!DESC kodachrome k-9
+//!DESC Kodachrome k-9
+
+#define Strength 0.7 //[0, 1.0] default: 0.7, 0: no Effect.
+/* increases contrast with strong colors, 
+may burn out whites/blacks and may highlight banding/compression artifacts 
+*/
+
 
 vec4 hook(){
 	vec4 color = HOOKED_texOff(0);
-	return texture(CLUT, 8.0/9*color.rgb +1/18.0);
+	// return texture(CLUT, 8.0/9*color.rgb +1/18.0);
+	return mix(color, texture(CLUT, 8.0/9*color.rgb +1/18.0), Strength);
+	
 }
-/* increases contrast, strong colors, may burn out whites/blacks, may highlight banding/compression artifacts */
 
 //created with butterw/lut2hook.py from k_tone_vintage_kodachrome-9.png
 //!TEXTURE CLUT
