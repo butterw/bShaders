@@ -6,6 +6,9 @@
 #define Strength 0.7 //[0, 1.0] default: 0.7, 0: no Effect.
 /* increases contrast with strong colors, 
 may burn out whites/blacks and may highlight banding/compression artifacts 
+
+Can be combined with a black&White shader to create a high-contrast monochrome output:
+kodachrome-9.hook >> bw.hook (Agfa 200X)
 */
 
 
