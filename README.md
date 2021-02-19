@@ -1,6 +1,6 @@
 # bShaders
 Effects/Filters for video playback 
-This project aims at providing shaders (DirectX .hlsl files), tools and comparison screenshots for realtime video Effects. The focus is on best implementation (and tuned parameter settings) of lightweight gpu shaders.
+This project aims at providing shaders (DirectX .hlsl or mpv .hook glsl files), tools and comparison screenshots for realtime video Effects. The focus is on best implementation (and tuned parameter settings) of lightweight gpu shaders.
 
 Shaders tested on MPC-HC video player (EVR-CP Dx9) on integrated graphics. https://www.videohelp.com/software/Media-Player-Classic-Home-Cinema
 MPC-HC enables hardware-accelerated playback of local and internet videos without requiring the installation of additional codecs.
