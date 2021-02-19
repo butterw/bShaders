@@ -1,6 +1,10 @@
 ## Lut Shaders 
 
-CLUTs (Color Look-Up-Tables) are widely used in for color-grading and applying color effects (ex: film emulation and many free luts are available on the internet.<br/>
+CLUTs (Color Look-Up-Tables) are widely used in for color-grading and applying color effects (ex: film emulation).
+Many luts are available on the internet:
+- https://gmic.eu/color_presets/
+- https://filterhunt.com/ 
+
 Mpv video player can apply text-based lut transformations through ffmpeg --vf:<br/>
 ! use a relative path with / for the lut file. Input is converted to rgb24.<br/>
 mpv --vf=lut3d=clut.cube video.mp4<br/>
@@ -11,7 +15,7 @@ Mpv allows embedded (1D or 3D) textures in shaders, which can be used for fast L
 For Color Luts, RGB 3D textures with 3D linear interpolation can be used.<br/>
 ! The texture format (FBO) must be supported by the gpu driver, which can be an issue cross-platform for floating point formats (vs more lightweight rgba8 format which is simple to encode and widely supported). <br/>
 The required conversion from the available Lut formats to .hook hex-texture can be done through a Python script (I'm using Open-CV and Numpy for this). <br/>  
-! As mentionned in https://developer.nvidia.com/gpugems/gpugems2/part-iii-high-quality-rendering/chapter-24-using-lookup-tables-accelerate-color, a lookup coordinate correction is required in the shader. To avoid oversaturation-bias, ex for cube-4 identity lut:<br/>
+! As mentionned in https://developer.nvidia.com/gpugems/gpugems2/part-iii-high-quality-rendering/chapter-24-using-lookup-tables-accelerate-color, a lookup coordinate correction is required in the shader to avoid crushed blacks, ex for cube-4 identity lut:<br/>
 return texture(CLUT, 0.75*color.rgb + 0.125); //lutSize: 4<br/>
 correction applied: (lutSize - 1.0)/lutSize *oldCoord + 1.0/(2.0 *lutSize)
 
