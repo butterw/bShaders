@@ -3,6 +3,18 @@
 //!BIND CLUT
 //!DESC bw-4 rollei_ortho_25 
 
+/* this is a contrasted Black & White Shader. Alternatives would be: 
+for less contrast:
+- NoChroma (cancels source chroma)
+- bw (Agfa 200X)
+
+Higher contrasts for Blacks or Whites are possible, but not suited for all sources.
+- Kodachrome; bw
+- etc.
+see: https://gmic.eu/color_presets/bw_sample_7.html#browse
+*/ 
+
+
 vec4 hook(){
 	vec4 color = HOOKED_texOff(0);
 	return texture(CLUT, 0.75*color.rgb +0.125);
