@@ -13,7 +13,6 @@ function store_shaders() { //store current shader config on first run, this conf
 		var s = mp.get_property("glsl-shaders")
 		if (s) { shaders = s; is_first_run = false;}	
 	} else { mp.set_property("glsl-shaders", shaders.replace(/,/g, ";"));} //js global string replacement !
-	is_first_run = false;
 }
 mp.register_script_message("store-shaders", store_shaders); 
 mp.add_key_binding("F10", "store-shaders", store_shaders); //hotkey will be overriden by input.conf if a binding for the same key is defined or pre-defined.
