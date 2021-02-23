@@ -18,3 +18,5 @@ The difference between an expanded and a non expanded limited range is most visi
 * avs_pc.709_720p-001.png:
 ![](https://github.com/butterw/bShaders/blob/master/test_LimitedRange/avs_pc.709_720p-001.png?raw=true)
 
+The output can be encoded to x264 .mp4 with ffmpeg:
+ffmpeg -i gen_ColorBarsHD.avs -an -t 60 -c:v libx264 -pix_fmt yuv420p -tune stillimage -preset veryslow -crf 12 ColorBarsHD.mp4
