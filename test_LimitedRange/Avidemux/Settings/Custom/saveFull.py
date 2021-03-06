@@ -3,7 +3,7 @@
 # duration in minutes, nbSegments / nbVideos, the number of audio tracks if it is not one, ex: 1m 2/1 0a
 # https://github.com/butterw/bShaders/blob/master/test_LimitedRange  
 
-header_str = "saveFull" # v0.1 #tested in Avidemux2.8
+header_str = "saveFull" # v0.1 #tested in Avidemux2.7.8
 
 adm=Avidemux(); ed=Editor(); gui=Gui() 
 sec = 1000*1000
