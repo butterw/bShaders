@@ -6,8 +6,9 @@
 seek_s=120
 ## 3) keyframe-seek, using a approximate time (seek_s) in seconds 
 
-header_str = "seek Fwd" ##v0.1
+header_str = "seek Fwd" ##v0.11
 adm=Avidemux(); ed=Editor(); gui=Gui() 
+sec = 1000*1000
 
 nSegm = ed.nbSegments()
 if not nSegm:
