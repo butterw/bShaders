@@ -2,18 +2,15 @@
 # requires Avidemux>=v2.7.7
 # this script can be installed to GUI menu (copy to settings/custom) 
 # https://github.com/butterw/bShaders/blob/master/test_LimitedRange
+#_ixxx.py v0.12
 
 seek_s=120
 ## 3) keyframe-seek, using a approximate time (seek_s) in seconds 
 
-header_str = "seek Fwd" ##v0.11
-adm=Avidemux(); ed=Editor(); gui=Gui() 
+adm=Avidemux(); ed=Editor()
 sec = 1000*1000
 
-nSegm = ed.nbSegments()
-if not nSegm:
-	gui.displayError(header_str, "No video loaded !")
-	return
+if not ed.nbSegments(): return
 
 c = ed.getCurrentPts()
 adm.setCurrentPts(c +seek_s*sec)
