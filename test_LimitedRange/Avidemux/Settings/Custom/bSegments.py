@@ -3,12 +3,11 @@
 # requires Avidemux>=v2.7.7
 # this script can be installed to menu > custom  (copy to settings/custom) 
 # https://github.com/butterw/bShaders/blob/master/test_LimitedRange
-# bSegments.py v0.1
+# bSegments.py v0.11
 
 header_str = "listSegments"
 MaxSegments = 10 #the max number of segments to display
 adm=Avidemux(); ed=Editor(); gui=Gui() 
-N = min(nSegm, MaxSegments)
 sec = 1000*1000
 
 try: splitext("test.abc") 
@@ -17,6 +16,8 @@ except:
 	return
 nSegm = ed.nbSegments()
 if nSegm<2: print("Requires at least 2 Segments !"); return -1 #segments check!
+N = min(nSegm, MaxSegments)
+
 
 def str3f(x):
 # returns str(x rounded to 3 decimals)
