@@ -3,9 +3,9 @@
 # requires Avidemux>=v2.7.7
 # this script can be installed to menu > custom  (copy to settings/custom) 
 # https://github.com/butterw/bShaders/blob/master/test_LimitedRange
-# bSegments.py v0.11
+# bSegments.py v0.12
 
-header_str = "listSegments"
+header_str = "Segments"
 MaxSegments = 10 #the max number of segments to display
 adm=Avidemux(); ed=Editor(); gui=Gui() 
 sec = 1000*1000
@@ -74,16 +74,16 @@ for idx in range(N):
 	else: kPts=endP
 	segments_pts.append(kPts)
 	refVideos.append(refI)
-	line = "#"+str(idx)
-	if nVid>1: line+= "/v"+str(refI) 
-	line+= " ("+ toMinutesSeconds(dI) +") "+ strPts(kPts)   
+	line = "["+str(idx)
+	if nVid>1: line+= ":v"+str(refI) 
+	line+= "] "+ strPts(kPts) +" ("+ toMinutesSeconds(dI) +")"
 	lines.append(line)
 
 ## Display
 title_str = header_str +": "+str(nSegm) 
 if nVid>1: title_str+= "/v"+ str(nVid)
 dlgWizard = DialogFactory(title_str)
-label_str = "("+ str(cIdx) +") "+ strPts(cPts)
+label_str = "["+ str(cIdx) +"] "+ strPts(cPts)
 mnu = DFMenu(label_str) # "_" is discarded in the label !!!
 for item in lines: mnu.addItem(item)
 display_idx = min(cIdx+1, nSegm-1)
