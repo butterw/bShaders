@@ -3,16 +3,20 @@
 #define wh 245
 
 /* --- bContrast (dx11), aka 16-235mod to 0-255 --- */
-/* v1.01 (06/2023) released by butterw under GPLv3
+/* v1.02 (06/2023) released by butterw under GPLv3
 (1 texture, 1 arithmetic)
 
-modified version of the MPC-HC shader "16-235 to 0-255.hlsl".
-allows custom values instead of just (16, 235) for the rgb black and white points.
-
-Default parameters (bk: 10, wh: 245) for the rgb black and white points.
-pixel.rgb = (pixel.rgb -const_1) *const_2 = pixel.rgb*const_2 -const_1*const_2
 Expands the rgb histogram, increasing the contrast.
 Can be useful to lift the haze on lackluster internet videos.
+
+Modified version of the MPC-HC shader "16-235 to 0-255.hlsl".
+allows custom values instead of (16, 235) for the new rgb black/white points, 
+ex: (bk: 10, wh: 245)
+
+c0 = (c0 -const_1) *const_2 = c0*const_2 -const_1*const_2
+c0 =  c0*255./(wh-bk) - bk/255.*255./(wh-bk)
+c0 =  (c0*255. - bk) /(wh-bk)
+	with c0: pixel.rgb in [0, 1.0]
 
 */
 Texture2D tex : register(t0);
