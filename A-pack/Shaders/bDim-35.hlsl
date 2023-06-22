@@ -2,18 +2,16 @@
 #define Exposure -0.35
 
 
-/* --- bDim (dx9), bExposure with a negative value --- */
-/* v1.0 (06/2023) released by butterw under GPLv3
+/* --- bDim (dx9), bExposure --- */
+/* v1.01 (06/2023) released by butterw under GPLv3
 /* (1 texture, 1 arithmetic) 
 
+Dims or lights-up the video.
 
 c0 = c0 *(1.0+Exposure) = c0 + c0*Exposure, with c0: pixel.rgb 
-
-Dims or lights-up the video
-- parameter Exposure, [-1, ..], default: -0.1, 0: no change, -1: All black. 
-negative: dims, positive: lights-up
- 
-c0 = c0 *(1.0+Exposure) = c0 + c0*Exposure, with c0: pixel.rgb
+- parameter Exposure, [-1, ..], 0: no change, -1: All black. 
+negative: dims, ex: -0.35
+positive: lights-up
 
 */
 
