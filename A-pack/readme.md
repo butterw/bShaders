@@ -5,9 +5,9 @@ code released under GPL v3 by butterw
 For video players+renderers which support user pixel shader integration:
 
 A-pack:
-- Shaders
-	dx9 hlsl shaders. Can be used with evr-cp or mpc-vr.
-- Shaders11
+- Shaders (mpc-hc, mpc-be, etc.)
+	dx9 hlsl shaders. Can be used with evr-cp or mpc-vr 
+- Shaders11 (mpc-hc, mpc-be, etc.)
 	dx11 hlsl shaders. Can be used in mpc-vr (post-resize only). 
 - mpv 
 	glsl .hook shaders.
@@ -25,6 +25,6 @@ to brighten/darken:
 - bExposure (bDim-35, brighten-10, brighten 20)
 - bShadows-10
 
-black &White (Grayscale):
+black & White (Grayscale):
 - Luma
 - custom b&w film emulation 
