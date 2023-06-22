@@ -3,13 +3,14 @@
 
 
 /* --- bExposure (dx9) --- */
-/* v1.0 (06/2023) released by butterw under GPLv3
-/* (1 texture, 1 arithmetic)
+/* v1.01 (06/2023) released by butterw under GPLv3
+(1 texture, 1 arithmetic)
 
-pixel.rgb = pixel.rgb *(1.0+Exposure) = pixel.rgb + pixel.rgb*Exposure 
-
-- parameter Exposure, [-1, 1], default: -0.1, 0: no change
 Exposure is an alternative way to increase/decrease brightness.
+
+c0 = c0 *(1.0+Exposure) = c0 + c0*Exposure, with c0: pixel.rgb 
+- parameter Exposure, [-1, 1], default: -0.1, 0: no change
+
 
 */
 
