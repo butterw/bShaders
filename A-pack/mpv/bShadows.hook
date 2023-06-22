@@ -1,0 +1,26 @@
+//!HOOK MAIN
+//!BIND HOOKED
+//!DESC bShadows
+
+#define Shadows -0.10
+
+/* --- bShadows (mpv .hook) --- */
+/* v1.0 (2023-06) released by butterw under GPLv3 
+
+pixel.rgb = pixel.rgb + Shadows*(1-luma)**4
+- Shadows Parameter, 0: no change
+negative: darkens the shadows, ex: -0.10
+positive: lighten the shadows   
+
+*/
+
+#define LumaCoef vec4(0.2126, 0.7152, 0.0722, 0)
+
+vec4 hook() {
+    vec4 c0 = HOOKED_texOff(0);
+    float shadowsBleed = 1.0 -dot(c0, LumaCoef);
+    shadowsBleed *=shadowsBleed; 
+    shadowsBleed *=shadowsBleed;
+    
+    return c0 + Shadows *shadowsBleed;
+}
