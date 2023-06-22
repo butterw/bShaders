@@ -1,0 +1,22 @@
+//!HOOK MAIN
+//!BIND HOOKED
+//!DESC brighten
+
+#define Exposure 0.20
+
+/* --- bExposure (mpv .hook) --- */
+/* v1.01 (06/2023) released by butterw under GPLv3
+(1 texture, 1 arithmetic) 
+
+Exposure is an alternative way to increase/decrease brightness.
+
+c0 = c0 *(1.0+Exposure) = c0 + c0*Exposure, with c0: pixel.rgb 
+- parameter Exposure, [-1, 1], 0: no change  
+positive increases brightness, ex: 0.20
+
+*/
+
+vec4 hook() {
+    vec4 c0 = HOOKED_texOff(0);
+    return c0 *(1.0 + Exposure);
+}
