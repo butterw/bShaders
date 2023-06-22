@@ -1,0 +1,23 @@
+//!HOOK MAIN
+//!BIND HOOKED
+//!DESC bDim
+
+#define Exposure -0.35
+
+/* --- bDim (mpv .hook) --- */
+/* v1.01 (06/2023) released by butterw under GPLv3
+(1 texture, 1 arithmetic) 
+
+Dims or lights-up the video.
+
+c0 = c0 *(1.0+Exposure) = c0 + c0*Exposure, with c0: pixel.rgb 
+- parameter Exposure, [-1, ..], 0: no change, -1: All black. 
+negative: dims, ex: -0.35
+positive: lights-up
+
+*/
+
+vec4 hook() {
+    vec4 c0 = HOOKED_texOff(0);
+    return c0 *(1.0 + Exposure);
+}
