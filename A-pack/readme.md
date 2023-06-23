@@ -19,15 +19,21 @@ They are designed to allow easy color adjustments. These can typically be useful
 
 ### Shaders
 
-Contrast adjustment:
-- contrast.10
+Contrast adjustments:
+- contrast.10, symmetrical rgb expansion around midpoint 0.5.
 - contrastBW (12, 235) new black and white point
 
 to brighten/darken:
-- bLift
-- bExposure (bDim-35, brighten-10, brighten 20)
+- bLift, doesn't affect white point
+- bExposure (bDim-35, brighten-10, brighten 20), doesn't affect black point
 - bShadows-10
 
-black & White (Grayscale):
+black & White:
 - Luma
-- custom b&w film emulation 
+- custom b&w film emulation (rgb to Grayscale)
+
+### Curve Comparison Plots
+- https://github.com/butterw/bShaders/blob/master/img/Contrast.14_vs_ContrastBW.png?raw=true
+- https://raw.githubusercontent.com/butterw/bShaders/master/img/Lift_vs_Brightness_0.1-0.1.png
+- https://github.com/butterw/bShaders/blob/master/img/Exposure_vs_Brightness10-10.png?raw=true
+- https://github.com/butterw/bShaders/blob/master/img/Shadows-15_vs_Lift_Brightness-10.png?raw=true
