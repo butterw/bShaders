@@ -18,7 +18,10 @@ They are designed to allow easy color adjustments. These can typically be useful
 
 
 ### Shaders
-- bContrast (10, 245) black and white point adjustment
+
+Contrast adjustment:
+- contrast.10
+- contrastBW (12, 235) new black and white point
 
 to brighten/darken:
 - bLift
