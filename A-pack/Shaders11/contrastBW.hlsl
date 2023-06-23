@@ -1,17 +1,20 @@
 // $MinimumShaderProfile: ps_4_0
-#define bk 10
-#define wh 245
+#define bk 12
+#define wh 235
 
-/* --- bContrast (dx11), aka 16-235mod to 0-255 --- */
-/* v1.02 (06/2023) released by butterw under GPLv3
+/* --- contrastBW, aka 16-235mod to 0-255 (dx11) --- */
+/* v1.12 (06/2023) released by butterw under GPLv3
 (1 texture, 1 arithmetic)
 
 Expands the rgb histogram, increasing the contrast.
 Can be useful to lift the haze on lackluster internet videos.
 
 Modified version of the MPC-HC shader "16-235 to 0-255.hlsl".
-allows custom values instead of (16, 235) for the new rgb black/white points, 
-ex: (bk: 10, wh: 245)
+Parameter Values, uses rgb8 color [0, 255.0]
+(bk:0, wh:255): no effect
+allows custom values instead of (16, 235) for the new rgb black/white points
+	ex: (bk: 12, wh: 235).
+	The 2 parameters allow for asymmetrical expansion (bk!= 255-wh) not available with Constrast Shader.
 
 c0 = (c0 -const_1) *const_2 = c0*const_2 -const_1*const_2
 c0 =  c0*255./(wh-bk) - bk/255.*255./(wh-bk)
