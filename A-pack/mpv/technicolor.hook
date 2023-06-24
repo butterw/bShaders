@@ -1,0 +1,37 @@
+//!HOOK MAIN
+//!BIND HOOKED
+//!DESC technicolor
+
+#define TPower   5.0      //[0 to 8.0], ex:5.0
+#define Strength 0.4      //[0 to 1.0], ex:0.4
+
+/* --- technicolor (mpv .hook) --- */
+/* adapted from SweetFx.Technicolor by butterw (2023-06)
+(1 texture, 13 arithmetic)
+can be used to give oversaturated videos a more classic cinema look.
+*/
+#define NegativeAmount vec3(0.88, 0.88, 0.88) //[0 to 1.0]
+#define _Rk 1.0/(NegativeAmount.r *TPower)
+#define _Gk 1.0/(NegativeAmount.g *TPower)
+#define _Bk 1.0/(NegativeAmount.b *TPower)
+#define _Cyanfilter    vec3(0.0, 1.30, 1.0)
+#define _Magentafilter vec3(1.0, 0.0, 1.05) 
+#define _Yellowfilter  vec3(1.6, 1.6, 0.05)
+#define _RedOrangefilter vec2(1.05, 0.620) 
+#define _Greenfilter     vec2(0.30, 1.0)   
+#define _Magentafilter2 _Magentafilter.rb     
+
+vec4 hook(){ 
+	vec4 c0 = HOOKED_texOff(0);
+	float r_neg = dot(_RedOrangefilter, c0.rg);
+	float g_neg = dot(_Greenfilter,     c0.rg);
+	float b_neg = dot(_Magentafilter2,  c0.rb);
+	
+	vec3 rgb_out;
+	rgb_out = _Cyanfilter    + r_neg.xxx *_Rk;
+	rgb_out*= _Magentafilter + g_neg.xxx *_Gk;
+	rgb_out*= _Yellowfilter  + b_neg.xxx *_Bk;
+
+	c0.rgb = mix(c0.rgb, rgb_out, Strength);
+	return c0;
+}
