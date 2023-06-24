@@ -5,13 +5,17 @@
 #define Shadows -0.10
 
 /* --- bShadows (mpv .hook) --- */
-/* v1.0 (2023-06) released by butterw under GPLv3 
+/* v1.20 (2023-06) released by butterw under GPLv3
+(1 texture, 5 arithmetic)
 
-pixel.rgb = pixel.rgb + Shadows*(1-luma)**4
-- Shadows Parameter, 0: no change
+Darken or lighten the shadows.
+
+c0 = c0 + Shadows*(1-luma)**4
+	with c0: pixel.rgb in [0, 1.0]
+
+- Shadows Parameter, 0: no change 
 negative: darkens the shadows, ex: -0.10
-positive: lighten the shadows   
-
+positive: lighten the shadows  
 */
 
 #define LumaCoef vec4(0.2126, 0.7152, 0.0722, 0)
@@ -21,6 +25,7 @@ vec4 hook() {
     float shadowsBleed = 1.0 -dot(c0, LumaCoef);
     shadowsBleed *=shadowsBleed; 
     shadowsBleed *=shadowsBleed;
+    // shadowsBleed *=shadowsBleed; //(1-luma)**8 tryout
     
     return c0 + Shadows *shadowsBleed;
 }
