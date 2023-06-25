@@ -1,0 +1,25 @@
+//!HOOK MAIN
+//!BIND HOOKED
+//!DESC Vibrance
+
+#define Vibrance -0.15
+
+/* --- vibrance (mpv .hook) --- */
+/* v1.0 (2023-06) released by butterw under GPLv3
+simplified version of SweetFx.Vibrance
+
+- Vibrance parameter, [-1.0, ..], 0: no effect 
+positive: saturates low-saturation pixels
+negative: reduces saturation of high-saturation pixels, ex: -0.15
+*/
+
+#define CoefLuma vec4(0.2126, 0.7152, 0.0722, 0) //sRGB, HDTV
+
+vec4 hook() {
+    vec4 c0 = HOOKED_texOff(0);
+	
+    vec2 colorxy = (c0.r > c0.g) ? c0.gr: c0.rg;
+    float colorSat = max(c0.b, colorxy.y) - min(c0.b, colorxy.x);
+    c0.rgb = mix(vec3(dot(c0, CoefLuma)), c0.rgb, 1+Vibrance -colorSat*abs(Vibrance)); 
+    return c0;
+}
