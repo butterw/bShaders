@@ -1,0 +1,58 @@
+//!PARAM shadows
+//!DESC Darkens the shadows (negative)
+//!TYPE CONSTANT float
+//!MINIMUM -0.5
+-0.15
+
+//!PARAM mode
+//!DESC 0: default, -1: red, 8: c0+Shadows*(1-luma)**8
+//!TYPE DEFINE
+4
+
+//!HOOK MAIN
+//!BIND HOOKED
+//!DESC bShadows_next
+
+/* --- bShadows_next (mpv .hook, gpu-next) --- */
+/* 
+Example of a mpv custom-shaders with tunable parameters (req. vo=gpu-next)
+see: https://libplacebo.org/custom-shaders/#param-name
+
+use:
+with default values:	> mpv --vo=gpu-next --glsl-shaders=s/bShadows_next.hook; video1.mp4
+parameter shadows=0.10  > mpv --vo=gpu-next --glsl-shaders=s/bShadows_next.hook; --glsl-shader-opts=Shadows=0.10,mode=8 video1.mp4
+! Parameter names are case-sensitive
+
+*/
+
+/* v1.20 (2023-06) released by butterw under GPLv3
+(1 texture, 5 arithmetic)
+
+Darken or lighten the shadows.
+
+c0 = c0 + Shadows*(1-luma)**4
+	with c0: pixel.rgb in [0, 1.0]
+
+- shadows Parameter, 0: no change, 
+negative: darkens the shadows, ex: -0.15
+positive: lighten the shadows  
+
+- mode Parameter, 
+4: (1-luma)**4, default, -1: All red, 8: (1-luma)**8
+
+*/
+
+#define LumaCoef vec4(0.2126, 0.7152, 0.0722, 0)
+
+vec4 hook() {
+    vec4 c0 = HOOKED_texOff(0);
+    float shadowsBleed = 1.0 -dot(c0, LumaCoef);
+    shadowsBleed *=shadowsBleed; 
+    shadowsBleed *=shadowsBleed;
+	#if   mode == 8
+		shadowsBleed *=shadowsBleed; //tryout: (1-luma)**8
+	#elif mode == -1
+		return vec4(1, 0, 0, 0); //test: red screen		
+	#endif
+    return c0 + shadows *shadowsBleed;
+}
