@@ -1,20 +1,19 @@
-## Color Adjustment pixel shader pack (A-pack, dx9, dx11 and mpv.hook)
+## Color Adjustment pixel shader pack (A-pack, dx9, dx11 and mpv .hook)
+Designed to allow easy color adjustments, typically useful when watching (web) videos.
 https://github.com/butterw/bShaders/tree/master/A-pack
 code released under GPL v3 by butterw
 
-For video players+renderers which support user pixel shader integration:
+For applications such as video players+renderers with support for rgb pixel shader integration:
 
-A-pack:
+A-pack custom user shaders:
 - Shaders (mpc-hc, mpc-be, etc.)
-	dx9 hlsl shaders. Can be used with evr-cp or mpc-vr 
+	dx9 hlsl shaders. Can be used with evr-cp or mpc-vr renderers.
 - Shaders11 (mpc-hc, mpc-be, etc.)
 	dx11 hlsl shaders. Can be used in mpc-vr (post-resize only). 
 - mpv 
-	glsl .hook shaders.
+	glsl .hook shaders (for default vo=gpu, and vo=gpu_next)
 
-
-The shaders are lightweight and typically only have one (user tunable) parameter.
-They are designed to allow easy color adjustments. These can typically be useful when watching (web) videos.
+The shaders are lightweight and typically only have one or no (user tunable) parameters. In general, parameter values are in [-1, 1.0] interval, with 0 corresponding to no effect.
 
 
 ### Shaders
@@ -24,15 +23,18 @@ Contrast adjustments:
 - contrastBW (12, 235) new black and white point
 
 to brighten/darken:
-- bLift, doesn't affect white point
-- bExposure (bDim-35, brighten-10, brighten 20), doesn't affect black point
+Using a legacy Brightness (rgb shift) adjustment is not recommended, there are better solutions.
+- bLift, doesn't affect white point 
+- bExposure (brighten.10, brighten-10, bDim-35), doesn't affect black point
 - bShadows-10
+- tooDark-30 (Photoshop Screen Blend curve)
 
-black & White:
-- Luma
-- custom b&w film emulation (rgb to Grayscale)
+Black & White:
+- Luma (HDTV rec709 Coef)
+- Custom b&w film emulation (rgb to Grayscale)
 
 ### Curve Comparison Plots
+- https://www.desmos.com/calculator/eibkoj8sgp (interactive plot for tooDark-30 curve, comparison with bGamma-15 and bExposure.10)
 - https://github.com/butterw/bShaders/blob/master/img/Contrast.14_vs_ContrastBW.png?raw=true
 - https://raw.githubusercontent.com/butterw/bShaders/master/img/Lift_vs_Brightness_0.1-0.1.png
 - https://github.com/butterw/bShaders/blob/master/img/Exposure_vs_Brightness10-10.png?raw=true
