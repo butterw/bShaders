@@ -1,5 +1,5 @@
-## Color Adjustment pixel shader pack (A-pack, dx9, dx11 and mpv .hook)
-Designed to allow easy color adjustments, typically useful when watching (web) videos.
+## Color Adjustment pixel shader pack (A-pack, dx9, dx11 hlsl and mpv glsl .hook)
+Performance optimized shaders designed to allow easy color adjustments, typically useful when watching (web) videos. Runs on integrated graphics.
 https://github.com/butterw/bShaders/tree/master/A-pack
 code released under GPL v3 by butterw
 
@@ -18,10 +18,6 @@ The shaders are lightweight and typically only have one or no (user tunable) par
 
 ### Shaders
 
-Contrast adjustments:
-- contrast.10, symmetrical rgb expansion around midpoint 0.5.
-- contrastBW (12, 235) new black and white point
-
 to brighten/darken:
 Using a legacy Brightness (rgb shift) adjustment is not recommended, there are better solutions.
 - bLift, doesn't affect white point 
@@ -29,11 +25,16 @@ Using a legacy Brightness (rgb shift) adjustment is not recommended, there are b
 - bShadows-10
 - tooDark-30 (Photoshop Screen Blend curve)
 
+Contrast adjustments:
+- contrast.10, symmetrical rgb expansion around midpoint 0.5.
+- contrastBW (12, 235) new black and white point
+
 Black & White:
 - Luma (HDTV rec709 Coef)
 - Custom b&w film emulation (rgb to Grayscale)
 
-### Curve Comparison Plots
+### Curve Comparison Plots (https://github.com/butterw/bShaders/tree/master/img)
+- https://github.com/butterw/bShaders/blob/master/img/Curves_basics.png?raw=true
 - https://www.desmos.com/calculator/eibkoj8sgp (interactive plot for tooDark-30 curve, comparison with bGamma-15 and bExposure.10)
 - https://github.com/butterw/bShaders/blob/master/img/Contrast.14_vs_ContrastBW.png?raw=true
 - https://raw.githubusercontent.com/butterw/bShaders/master/img/Lift_vs_Brightness_0.1-0.1.png
