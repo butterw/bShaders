@@ -33,7 +33,9 @@ Black & White:
 - Luma (HDTV rec709 Coef)
 - Custom b&w film emulation (rgb to Grayscale)
 
-### Curve Comparison Plots (https://github.com/butterw/bShaders/tree/master/img)
+### Curve Comparison Plots 
+- https://github.com/butterw/bShaders/tree/master/img
+![](https://raw.githubusercontent.com/butterw/bShaders/master/img/Curves_basics.png)
 - https://github.com/butterw/bShaders/blob/master/img/Curves_basics.png?raw=true
 - https://www.desmos.com/calculator/eibkoj8sgp (interactive plot for tooDark-30 curve, comparison with bGamma-15 and bExposure.10)
 - https://github.com/butterw/bShaders/blob/master/img/Contrast.14_vs_ContrastBW.png?raw=true
