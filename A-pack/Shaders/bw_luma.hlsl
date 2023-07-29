@@ -1,11 +1,10 @@
 // $MinimumShaderProfile: ps_2_0
 
 /* --- bw_luma (dx9) --- */
-/* released by butterw under GPLv3
+/* v1.40 (07/2023) released by butterw under GPLv3
 
-Displays the grayscale luminance (luma) image derived from rgb.
-Same shader as the Grayscale shader included with mpc-be (different from the one in mpc-hc).
-
+Displays the grayscale luminance (HDTV luma) image derived from rgb.
+Same as the Grayscale shader included with mpc-be (different from the one in mpc-hc).
 
 */
 sampler s0: register(s0);
