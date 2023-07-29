@@ -7,13 +7,13 @@
 
 Smart saturation (or desaturation). Protects skin tones from excessive adjustments.
 
-- Vibrance parameter, [-1, 1.0], 0: no effect 
+- Vibrance parameter, [-1, 1.0], 0: no effect
 >> Positive: saturates low-saturation pixels first, ex: 0.35
 negative: reduces saturation of high-saturation pixels first, ex: -0.15
 
-Simplified version of SweetFx.Vibrance. 
+Simplified version of SweetFx.Vibrance.
 Calculates a saturation measure, then applies saturation based on it.
-Affects color only, no effect on grays.  
+Affects color only, no effect on grays.
 */
 
 sampler s0: register(s0);
@@ -25,5 +25,5 @@ float4 main(float2 tex: TEXCOORD0): COLOR {
 
 	colorSat = 1.0+Vibrance -abs(Vibrance)*colorSat;
 	c0.rgb = lerp(dot(c0, CoefLuma), c0.rgb, colorSat);
-	return c0; 
+	return c0;
 }
