@@ -10,7 +10,7 @@ Expands the rgb histogram by applying the levels curve, increasing the contrast.
 Can be useful to lift the haze on lackluster internet videos.
 
 ! Parameter values (bk, wh) use rgb8 color scale [0, 255.0], not [0, 1.0].
-bk: new black point, wh: new white point, (bk:0, wh:255): no effect
+bk: new Black point, wh: new White point, (bk:0, wh:255): no effect
 ! Any input below bk, or above wh will be clipped.
 
 Modified version of the MPC-HC shader "16-235 to 0-255.hlsl".
@@ -30,8 +30,8 @@ sampler s0: register(s0);
 #define constrast (255.0/(wh-bk))
 
 float4 main(float2 tex: TEXCOORD0): COLOR {
-    float4 c0 = tex2D(s0, tex);
+	float4 c0 = tex2D(s0, tex);
 
 	c0.rgb = c0.rgb*constrast -const_1*constrast;
-    return c0;
+	return c0;
 }
