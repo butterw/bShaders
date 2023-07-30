@@ -1,15 +1,16 @@
 // $MinimumShaderProfile: ps_4_0
 #define CoefMonochrome float4(0.18, 0.41, 0.41, 0) //Agfa 200X
 
-/* --- bw (dx11) --- */
-/* v1.0 (2023-06), released by butterw under GPLv3
+/* --- bw (dx11) --- black&white */
+/* v1.40 (2023-07), released by butterw under GPLv3
+(1 texture, 1 arithmetic)
 
-Transforms a video to Black&White using a custom Grayscale Conversion Coef.
+Transforms a video to black&white using a custom rgba to grayscale conversion coef (CoefMonochrome).
 The latter can be changed to achieve a different look.
 
 -- Grayscale Conversion Coefs --
-float4(1/3., 1/3., 1/3., 0)       //Equal weight
-float4(0.299, 0.587, 0.114, 0)    // mpc-hc Grayscale
+float4(1/3., 1/3., 1/3., 0) //Equal weight
+float4(0.299, 0.587, 0.114, 0) // mpc-hc Grayscale
 float4(0.2126, 0.7152, 0.0722, 0) //sRGB, HDTV: CoefLuma used by bw_luma shader
 
 Some values for black&white film from SweetFx.Monochrome by CeeJay.dk:
@@ -30,14 +31,11 @@ float4(0.27, 0.36, 0.37, 0) //Kodak Tmax 400
 float4(0.25, 0.35, 0.40, 0) //Kodak Tri-X
 */
 
-Texture2D tex : register(t0);
-SamplerState samp : register(s0);
+Texture2D tex: register(t0);
+SamplerState samp: register(s0);
 
 float4 main(float4 pos: SV_POSITION, float2 coord: TEXCOORD): SV_Target {
-    float4 c0 = tex.Sample(samp, coord);
+	float4 c0 = tex.Sample(samp, coord);
 
-    return dot(c0, CoefMonochrome);
+	return dot(c0, CoefMonochrome);
 }
-
-
-
