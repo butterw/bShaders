@@ -1,0 +1,34 @@
+//!PARAM vibr
+//!DESC Saturates/deSaturates
+//!TYPE CONSTANT float
+//!MINIMUM -1
+0.35
+
+//!HOOK MAIN
+//!BIND HOOKED
+//!DESC vibrance_n(vibr)
+
+/* --- vibrance_next (mpv glsl.hook, req. vo_gpu-next) --- */
+/* v1.35 (2023-07) released by butterw under GPLv3
+(1 texture, 9 arithmetic).
+
+Smart saturation/desaturation. Protects skin tones from excessive adjustments.
+
+- Vibrance parameter, [-1, 1.0], 0: no effect 
+>> Positive: saturates low-saturation pixels first, ex: 0.35
+negative: reduces saturation of high-saturation pixels first, ex: -0.15
+
+Simplified version of SweetFx.Vibrance. 
+Calculates a saturation measure, then applies saturation based on it.
+Affects color only, no effect on grays.
+*/
+
+#define CoefLuma vec4(0.2126, 0.7152, 0.0722, 0) //sRGB, HDTV
+
+vec4 hook() {
+	vec4 c0 = HOOKED_texOff(0);
+	float colorSat = max(max(c0.r, c0.g), c0.b) -min(min(c0.r, c0.g), c0.b); // >=0, 5 arithmetic
+	
+	c0.rgb = mix(vec3(dot(c0, CoefLuma)), c0.rgb, 1+vibr -colorSat*abs(vibr));
+	return c0;
+}
