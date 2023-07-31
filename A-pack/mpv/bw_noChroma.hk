@@ -8,6 +8,9 @@
 
 CHROMA hook, enforces luma (grayscale) on yuv source by setting Cb=Cr=0.5. 
 Cb, Cr are in [0, 1.0].
+
+- If the source isn't yuv, a rgb shader is required.
+Alternative: bw.hk can handle both yuv and rgb inputs and can apply a black & white film emulation.
 */
 
 vec4 hook(){
