@@ -1,0 +1,42 @@
+//!HOOK MAIN
+//!BIND HOOKED
+//!DESC Black&White
+
+#define CoefMonochrome vec3(0.18, 0.41, 0.41)
+
+/* --- bw (mpv glsl.hook ) --- */
+/* v1.40 (2023-07), released by butterw under GPLv3
+(1 texture, 1 arithmetic)
+
+Transforms a color video to black&white using a custom rgb to grayscale conversion coefficient (CoefMonochrome).
+The latter can be changed to achieve a different look, ex: using CoefLuma (sRGB Luma) the blue channel only has a 7% ponderation. 
+
+-- Grayscale Conversion Coefs -- 
+vec3(1/3.)                   //equal weights
+vec3(0.299, 0.587, 0.114)    //mpc-hc Grayscale
+vec3(0.2126, 0.7152, 0.0722) //CoefLuma: sRGB, HDTV Luma
+
+Some values for black&white film from SweetFx.Monochrome by CeeJay.dk: 
+vec3(0.18, 0.41, 0.41) //Agfa 200X (default)
+vec3(0.25, 0.39, 0.36) //Agfapan 25
+vec3(0.21, 0.40, 0.39) //Agfapan 100
+vec3(0.20, 0.41, 0.39) //Agfapan 400 
+vec3(0.21, 0.42, 0.37) //Ilford Delta 100
+vec3(0.22, 0.42, 0.36) //Ilford Delta 400
+vec3(0.31, 0.36, 0.33) //Ilford Delta 400 Pro & 3200
+vec3(0.28, 0.41, 0.31) //Ilford FP4
+vec3(0.23, 0.37, 0.40) //Ilford HP5
+vec3(0.33, 0.36, 0.31) //Ilford Pan F
+vec3(0.36, 0.31, 0.33) //Ilford SFX
+vec3(0.21, 0.42, 0.37) //Ilford XP2 Super
+vec3(0.24, 0.37, 0.39) //Kodak Tmax 100
+vec3(0.27, 0.36, 0.37) //Kodak Tmax 400
+vec3(0.25, 0.35, 0.40) //Kodak Tri-X
+*/
+
+vec4 hook(){ 
+	vec4 c0 = HOOKED_texOff(0);
+	
+	c0.rgb = vec3(dot(c0.rgb, CoefMonochrome));
+	return c0;
+}

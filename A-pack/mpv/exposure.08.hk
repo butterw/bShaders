@@ -1,0 +1,33 @@
+//!HOOK MAIN
+//!BIND HOOKED
+//!DESC Exposure
+
+#define Exposure 0.08
+
+/* --- bExposure (mpv .hook) expo --- */
+/* v1.40 (07/2023) released by butterw under GPLv3
+/* (1 texture, 1 arithmetic)
+
+Exposure increases (or decreases) contrast/brightness.
+
+out = x * (1 + Exposure) = x + x*Exposure
+	with x, out: pixel.rgb in [0, 1.0]
+
+Exposure doesn't affect the Black point (0, 0).
+- Contrast: 1+Exposure.
+- Brightness change: Exposure*x. Maximum at the White point.
+
+- parameter Exposure, [-1.0, ..], 0: no change, -1: All black
+>> Positive: increases contrast/brightness, ex: 0.08
+	! input> 1/(1+Exposure) will be clipped.
+
+negative: decreases contrast/brightness (dims), output<= 1+Exposure.
+
+*/
+
+vec4 hook() {
+	vec4 c0 = HOOKED_texOff(0);
+	
+	c0.rgb = c0.rgb *(1.0 + Exposure);
+	return c0;
+}

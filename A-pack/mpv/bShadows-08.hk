@@ -1,0 +1,38 @@
+//!HOOK MAIN
+//!BIND HOOKED
+//!DESC bShadows
+
+#define Shadows -0.08
+
+/* --- bShadows (mpv .hook) --- */
+/* v1.40 (2023-07) released by butterw under GPLv3
+(1 texture, 5 arithmetic)
+
+Darken (or lighten) the shadows.
+
+out = x + Shadows*(1-x)^4
+	with x, out: pixel.rgb in [0, 1.0].
+
+- parameter Shadows [-1, 1.0], 0: no change
+>> Negative: darkens the shadows, ex: -0.08
+Use to ensure shadows are darks, doesn't alter the rest of the picture.
+Can be used to correct raised black levels.
+for Shadows:-0.10, clipped input <0.0736
+	first order approximation: clips <S/(4S-1)
+	a cheaper alternative would be to use bLift-08 (or expand7_255).
+
+positive: lighten the shadows
+
+*/
+
+#define LumaCoef vec4(0.2126, 0.7152, 0.0722, 0)
+
+vec4 hook() {
+	vec4 c0 = HOOKED_texOff(0);
+	float shadowsBleed = 1.0 -dot(c0, LumaCoef);
+	shadowsBleed *=shadowsBleed;
+	shadowsBleed *=shadowsBleed;
+	//shadowsBleed *=shadowsBleed; //tryout: (1-luma)**8
+	
+	return c0 + Shadows *shadowsBleed;
+}
