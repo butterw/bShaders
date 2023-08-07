@@ -1,6 +1,6 @@
 //!PARAM vibr
 //!DESC Saturates/deSaturates
-//!TYPE CONSTANT float
+//!TYPE float
 //!MINIMUM -1
 0.35
 
