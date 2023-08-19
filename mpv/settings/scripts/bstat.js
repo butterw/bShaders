@@ -1,7 +1,7 @@
 'use strict';
 
 /* --- bstat.js mpv script --- */
-/* v0.1 by butterw (2023/08)
+/* v0.11 by butterw (2023/08) bugfix 
 tested on win10. To install, copy to portable_config/scripts
 makes use of user-data properties (req. mpv v0.36).
 
@@ -42,7 +42,8 @@ mp.register_event("file-loaded", function() {
 	// Alternative: to display filesize in MB
 	// calculated with proper rounding: K1024(fsize_B)+"B";
 	// or from mpv MiB: mp.get_property_osd("file-size").replace("i", "");
-	var duration_str = mp.get_property_osd("duration").replace("00:", "");
+	var duration_str = mp.get_property_osd("duration");
+	if (duration_str.substring(0, 3)== "00:") duration_str=duration_str.substring(3);
 
 	// the following new properties are made available:
 	mp.set_property("user-data/duration", duration_str); //27:39 like mpc-hc
@@ -169,8 +170,6 @@ function nprint(property) {	//property_number
 }
 
 function fprint(property) {
-	oprint(property);
-	rprint(property);
-	nprint(property);
+	oprint(property); rprint(property); nprint(property);
 	print();
 }
