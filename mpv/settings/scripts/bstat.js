@@ -1,25 +1,24 @@
 'use strict';
 
-/* --- bstat.js mpv script --- */
-/* v0.11 by butterw (2023/08) bugfix 
+/* --- bstat.js mpv script (better stats) --- */
+/* v0.20 by butterw (2023/08) no longer redefines seek.
 tested on win10. To install, copy to portable_config/scripts
 makes use of user-data properties (req. mpv v0.36).
 
-- redefines the seek display (use with --no-osd-on-seek) to uses the shortened mpc-hc format (duration<1h): 34:25 / 45:10
+- show-time ms: show mpc-hc style time string: 34:25 / 45:10
 - pause-eof (use with --keep-open). When you reach the end of video, play from the start on play/pause (like mpc-hc).
 - restart-mpv: can be useful when testing scripts or shaders (reloads shaders).
-- b-osd: On-demand update or osd display (currently just displays b-osd)
 - each time a new file is loaded:
 	- calculates and makes available new (user-data) properties, ex: the duration in mpc-hc shortened format.
 	- prints a [bstats] bloc to the terminal output with:
-		- filepath
-		- file-size calculation with adaptative rounding using either base10 or base2 (M: 1e6 bytes by default) or (1024*1024 bytes).
+		- file path
+		- file-size calculation with adaptative rounding using either base10 or base2 units (M: 1e6 bytes by default) or (1024*1024 bytes).
 		- Aspect-ratio using exact (by default) or near (~) ratio calculation. Takes into account container DAR.
 		- average (audio-video file) bitrate calculation based on file-size and duration (replaces scripts/avg-bitrate.js).
 [bstat]
 [bstat] c:\Vids\myVideo.mp4
 [bstat] 3.8M, a9/16, 1939kb/s
-- some basic javascript utility code (ex: floating-point rounding, print properties).
+- some basic javascript utility functions (ex: floating-point rounding, print properties).
 
 ex: custom osd
 --osd-msg2 = "${osd-sym-cc} ${percent-pos}% of ${user-data/duration}\n${user-data/res} ${user-data/ar}\n${user-data/file-size}\n${user-data/avg-bitrate}-${audio-bitrate:}\n${video-format:}: ${video-bitrate:}"
@@ -27,26 +26,34 @@ ex: custom osd
 input.conf:
  O no-osd cycle-values osd-level 2 1 # toggles the custom osd
  SPACE	  script-message pause-eof
- b		  script-message b-osd
+ t		  script-message show-time 1500
  Shift+F5 script-binding restart-mpv
 
 */
+var duration;
+
+
+function fmt_time_str(t_str)  {
+	// shortens a time string, ex: duration. Mpv default: 00:03:08 and 01:27:09
+	if (t_str.substring(0, 3)== "00:") t_str=t_str.substring(3); //change to 03:08 and 01:27:09
+	//if (t_str.charAt(0)=="0") t_str = t_str.substring(1); //drops the leading zero 3:08 and 1:27:09 (shortest)
+	return t_str;
+}
 
 mp.register_event("file-loaded", function() {
 	// runs every time a new file is loaded.
 	// terminal: 3.6M, ar16/9, 1124kb/s
 	var fsize_B	 = mp.get_property_number("file-size"); //Bytes
-	var duration = mp.get_property_number("duration"); //seconds
+	duration = mp.get_property_number("duration"); //seconds
 	var avg_bitrate = calc_bitrate(fsize_B, duration);
 	var fsize_str  = K1000(fsize_B);
 	// Alternative: to display filesize in MB
 	// calculated with proper rounding: K1024(fsize_B)+"B";
 	// or from mpv MiB: mp.get_property_osd("file-size").replace("i", "");
-	var duration_str = mp.get_property_osd("duration");
-	if (duration_str.substring(0, 3)== "00:") duration_str=duration_str.substring(3);
+	duration = fmt_time_str(mp.get_property_osd("duration"));
 
 	// the following new properties are made available:
-	mp.set_property("user-data/duration", duration_str); //27:39 like mpc-hc
+	mp.set_property("user-data/duration", duration); //27:39 like mpc-hc
 	mp.set_property("user-data/file-size", fsize_str);	//805M
 	var term_str = mp.get_property("path")+"\n";
 	var ar_str = calc_aspect();
@@ -57,18 +64,14 @@ mp.register_event("file-loaded", function() {
 	print(term_str);
 });
 
-mp.register_event("seek", on_seek);
-function on_seek(){
-	var duration = mp.get_property_osd("user-data/duration");
-	var playtime = mp.get_property_osd("playback-time"); //"time-remaining"
-	if (duration.length ==5) {
-		playtime = playtime.replace("00:", "");
-	}
-	mp.commandv("show-text", playtime +" / "+ duration);
-}
-
 // On-demand update or osd display
-mp.register_script_message("b-osd", function() { mp.osd_message("b-osd", 3); });
+// input.conf: t script-binding show-time //optional parameter: a duration in ms.
+mp.register_script_message("show-time", function(ms) {
+	print("%", pct);	var playtime = mp.get_property_osd("playback-time");
+	playtime = playtime.substring(8-duration.length); //keep the same digits as duration
+	if (isNaN(ms) || ms<100) mp.commandv("show-text", playtime +" / "+ duration); //04:12 / 27:39
+	else mp.commandv("show-text", playtime +" / "+ duration, ms);
+});
 
 mp.register_script_message("pause-eof", function() {
 // mpc-hc: when you reach the end of the video, seeks back to the start on Play/Pause (use with --keep-open)
@@ -135,13 +138,13 @@ function calc_aspect() {
 	if		(dw ==1) ar="16/9";
 	else if (near_equal(dw, 1)) ar="~16/9"; //ex 480p: 854x480
 	else if (ar == 1.50)	ar="3/2";
-	else if	(ar*3/4 ==1)	ar="4/3";
+	else if (ar*3/4 ==1)	ar="4/3";
 	else if (ar == 1.25)	ar="5/4";
-	else if	(ar == 0.5625)  ar="9/16";
-	else if	(ar == 0.625)	ar="10/16";
-	else if	(ar*3/2 ==1)	ar="2/3";
-	else if	(ar == 0.75)	ar="3/4";
-	else if	(ar == 0.80)	ar="4/5";
+	else if (ar == 0.5625)	ar="9/16";
+	else if (ar == 0.625)	ar="10/16";
+	else if (ar*3/2 ==1)	ar="2/3";
+	else if (ar == 0.75)	ar="3/4";
+	else if (ar == 0.80)	ar="4/5";
 	else ar = fmt_fp(ar, 2);
 	return "a" + ar;
 }
@@ -151,25 +154,25 @@ function fmt_fp(x, n) {
 	return String(Math.round(x *m)/m);
 }
 
-function oprint(property) {	//property_osd
+function oprint(property) { //property_osd
 	var p = mp.get_property_osd(property);
 	if (p=="") p='""';
 	print(" "+ property +" osd:", p);
 }
 
-function rprint(property) {	//=property
+function rprint(property) { //=property
 	var p = mp.get_property(property);
 	if (p=="") p='""';
 	print(" "+ property, p);
 }
 
-function nprint(property) {	//property_number
+function nprint(property) { //property_number
 	var p = mp.get_property_number(property);
 	if (p=="") p='""';
 	print(" "+ property +" number:", p);
 }
 
-function fprint(property) {
+function fprint(property) { //full print
 	oprint(property); rprint(property); nprint(property);
 	print();
 }
