@@ -60,7 +60,7 @@ mpc-vr (requires an additional download/install)
 
 vo_gpu/vo_gpu-next
 - supports luma and pre- and post-resize rgb user shaders, as documented in the mpv manual.
-- shaders are applied to the black bars.
+- shaders are not applied to the black bars.
 
 MPC-HC
 - You can use shader presets to be able to switch between shaders rapidly (via right Click Menu > Shaders).
