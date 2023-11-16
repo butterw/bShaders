@@ -98,6 +98,7 @@ To try out this shader pack, you can use a standalone video player with portable
 
 **Mpc-hc shader presets**
 To get the Shaders menu featured in the A-pack screenshot, copy the following [Shaders\Presets] text block to your mpc .ini configuration file:
+```
 [Shaders\Presets]
 0=A-Pack
 1=bw
@@ -129,6 +130,7 @@ PreResize6=.\tooDark.24.hlsl
 PreResize7=.\vibrance.35.hlsl
 PreResize8=.\expand10_240.hlsl
 PreResize9=.\sCurve.hlsl
+```
 
 **Shader Cache dir**
 - To improve startup performance, recent mpv builds (july 2023) enable caching of compiled shaders to disk by default (ex: portable_config\cache). With vo-gpu a unique cache file called libplacebo.cache is created.
