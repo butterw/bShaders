@@ -1,44 +1,138 @@
-## Color Adjustment pixel shader pack (A-pack, dx9, dx11 hlsl and mpv glsl .hook)
-Performance optimized shaders designed to allow easy color adjustments, typically useful when watching (web) videos. Runs on integrated graphics.
-https://github.com/butterw/bShaders/tree/master/A-pack
-code released under GPL v3 by butterw
-
-For applications such as video players+renderers with support for rgb pixel shader integration:
-
-A-pack custom user shaders:
-- Shaders (mpc-hc, mpc-be, etc.)
-	dx9 hlsl shaders. Can be used with evr-cp or mpc-vr renderers.
-- Shaders11 (mpc-hc, mpc-be, etc.)
-	dx11 hlsl shaders. Can be used in mpc-vr (post-resize only). 
-- mpv 
-	glsl .hook shaders (for default vo=gpu, and vo=gpu_next)
-
-The shaders are lightweight and typically only have one or no (user tunable) parameters. In general, parameter values are in [-1, 1.0] interval, with 0 corresponding to no effect.
+## [A-Pack] Video Adjustments shaders Pack (v1.50 2023/11)
+Lightweight shaders for quick Adjustments of (web) video:
+- brightness/contrast curves (tooDark, tooBright, bShadows, levels) and color adjustments (vibrance, dSat, Black&White, etc.)
+- available for dx9 hlsl, dx11 hlsl and mpv glsl.hook.
+- Open-source: https://github.com/butterw/bShaders/tree/master/A-pack
+- v1.40 (2023/08): initial release by butterw.
+- v1.50 (2023/11): +sCurve contrast adjustment shader.
 
 
-### Shaders
+### Shader Adjustments to quickly improve the video being viewed.
 
-to brighten/darken:
-Using a legacy Brightness (rgb shift) adjustment is not recommended, there are better solutions.
-- bLift, doesn't affect white point 
-- bExposure (brighten.10, brighten-10, bDim-35), doesn't affect black point
-- bShadows-10
-- tooDark-30 (Photoshop Screen Blend curve)
+Why Shaders ?
+- Shaders run directly on the integrated graphics (or discrete video card) and can process video pictures very efficiently.
+- Player integration. Shaders can be toggled On/Off from within the video player.
 
-Contrast adjustments:
-- contrast.10, symmetrical rgb expansion around midpoint 0.5.
-- contrastBW (12, 235) new black and white point
+Why are the adjustments necessary ?
+- Input video may not have great capture/processing. This is particularly true for home and web videos.
+- Display and display settings. Monitor may not be calibrated for color accuracy.
+- Lighting conditions. They typically change during the day/night cycle and they significantly alter the viewing experience.
+- Viewer preference, individual taste.
 
-Black & White:
-- Luma (HDTV rec709 Coef)
-- Custom b&w film emulation (rgb to Grayscale)
+Simple to use Adjustments
+- These shaders are not meant for permanent use. The adjustments should be applied selectively when a video requires it (via menu or keyboard shortcut).
+- A key benefit of shaders is that they can easily be turned ON or OFF. Once turned OFF, there are no hidden settings that could degrade your normal viewing experience.
+- Shaders are applied directly to the video picture in the player.
+- Lightweight gpu pixel shaders with a focus on performance.
+- To install, simply copy the shader files to your players shader folder. To uninstall, delete the shader files from your players shader folder.
+- Simple code allows for easy modification if required (ex: change parameter values, combine multiple shaders into one). Just edit the shader file with a text editor.
+- The shaders are documented and typically only have a single user-tunable parameters in the [-1, 1.0] interval, with 0 corresponding to no effect.
+- Tested on intel integrated graphics (intel hd graphics, intel uhd 730) on Win10.
 
-### Curve Comparison Plots 
-- https://github.com/butterw/bShaders/tree/master/img
-![](https://raw.githubusercontent.com/butterw/bShaders/master/img/Curves_basics.png)
-- https://github.com/butterw/bShaders/blob/master/img/Curves_basics.png?raw=true
-- https://www.desmos.com/calculator/eibkoj8sgp (interactive plot for tooDark-30 curve, comparison with bGamma-15 and bExposure.10)
-- https://github.com/butterw/bShaders/blob/master/img/Contrast.14_vs_ContrastBW.png?raw=true
-- https://raw.githubusercontent.com/butterw/bShaders/master/img/Lift_vs_Brightness_0.1-0.1.png
-- https://github.com/butterw/bShaders/blob/master/img/Exposure_vs_Brightness10-10.png?raw=true
-- https://github.com/butterw/bShaders/blob/master/img/Shadows-15_vs_Lift_Brightness-10.png?raw=true
+**Use cases:**
+- The video is too dark
+- The video is too bright
+- The darks are not dark enough
+- The video lacks contrast
+- The colors are weak
+- The colors are over-saturated
+- I want to watch this video in black&white, with a color filter, etc.
+
+----
+## Video Player and Renderer software
+These shaders can be used in any software with user rgb pixel shader integration:
+hlsl shaders are supported by Windows players such as mpc-hc, mpc-be, etc.
+with the default renderer EVR-Custom Presenter and some other renderers such as mpc video renderer.
+- evr-cp (dx9,  /Shaders)
+- mpc-vr dx11 ( /Shaders11, post-resize only)
+
+Glsl .hook shaders are used by the cross-platform player mpv (and video players built on top of it),
+with the renderers vo=gpu or the new libplacebo-based vo=gpu-next.
+
+evr-cp is the default renderer in mpc-hc and mpc-be (dx9).
+- It supports pre- and post-resize user shaders. There is typically no difference in the output unless the video is resized.
+- Adjustment shaders are typically used pre-resize, because there are less pixels to process when upscaling (ex: 720p video displayed fullscreen on a 1080p screen).
+- ! Post-resize shaders are applied to the black bar padding in fullscreen.
+
+mpc-vr (requires an additional download/install)
+- Only supports post-resize user shaders. They are not applied to the black bars.
+- In the mpc-be and mpc-hc players, mpc-vr dx11 requires dx11 shaders.
+
+vo_gpu/vo_gpu-next
+- supports luma and pre- and post-resize rgb user shaders, as documented in the mpv manual.
+- shaders are applied to the black bars.
+
+MPC-HC
+- You can use shader presets to be able to switch between shaders rapidly (via right Click Menu > Shaders).
+- Shader presets can also be set via command line (or a shortcut): mpc-hc.exe /shaderpreset "Blur" "video1.mp4"
+
+MPC-BE
+- Mpc-be v1.6.8 or later is recommended for mpc-vr dx11 on Win10: the shader selector now defaults to the Shaders11 folder.
+- Shader changes via the shader selector are applied when the video is playing. In paused mode, you need to disable/enable shaders for the new shaders to be applied (tested with mpc-vr).
+- Mpc-be doesn't have support for shader presets.
+
+MPC-HC, MPC-BE
+- require the .hlsl extension for shaders. Other players may use a .txt extension instead.
+- shader folders:
+for dx9 shaders:  /Shaders
+for dx11 shaders: /Shaders11.
+Other players may use folders with different names.
+Potplayer and KMPlayer use dx9 shaders.
+
+MPV
+- vo=gpu-next is the new libplacebo-based renderer for mpv.
+- Shaders which require new features only available in vo_gpu-next are typically postfixed with _next.
+- There is no required extension for mpv glsl shaders, I typically use .hk as it is shorter than .hook.glsl.
+- There is no default shader folder, shaders could be placed directly in the player folder or a subfolder (ex: /s). You will need to specify a relative path to the shaders to use them so it may be best to keep it short/simple.
+- mpv needs to be configured (via input.conf) to be able to toggle shaders on/off via hotkey. Shaders can be toggled individually.
+
+To try out this shader pack, you can use a standalone video player with portable config (.zip download rather than .exe installer):
+- Mpc-hc/be saves its configuration in Windows Registry by default, but an .ini file in the player folder can override this: For this you must put the player files in a folder where your windows user account has write access without admin elevation. So typically not in a protected Windows folders such as C:\Program Files.
+- Mpv: inside the player folder create a subfolder named portable_config where you should put your mpv.conf and input.conf configuration files. These files don't exist by default, so you may need to create them.
+
+**How to check whether the shaders are working ?**
+- Try the bw (black&white) shader on a color video.
+- For adjustment shaders it may not be so obvious, as only small tweaks are typically required. First pause the video, then try toggling shaders On/Off to see the difference.
+- in mpv, the output screen is blue if there is a compilation error (likely caused by a syntax error) with an active shader.
+- in mpc-hc, you can use `Menu > Shaders > Debug Shaders... > then select the desired shader` to see if the shader compiled (if not a compilation error will be reported). Shaders which failed to compile aren't loaded.
+
+**Mpc-hc shader presets**
+To get the Shaders menu featured in the A-pack screenshot, copy the following [Shaders\Presets] text block to your mpc .ini configuration file:
+[Shaders\Presets]
+0=A-Pack
+1=bw
+2=dSat
+3=exposure
+4=shadows
+5=tooBright
+6=tooDark
+7=vibrance
+8=x10-240
+9=sCurve
+PostResize0=
+PostResize1=
+PostResize2=
+PostResize3=
+PostResize4=
+PostResize5=
+PostResize6=
+PostResize7=
+PostResize8=
+PostResize9=
+PreResize0=
+PreResize1=.\bw.hlsl
+PreResize2=.\dSat.hlsl
+PreResize3=.\exposure.08.hlsl
+PreResize4=.\bShadows-08.hlsl
+PreResize5=.\tooBright.hlsl
+PreResize6=.\tooDark.24.hlsl
+PreResize7=.\vibrance.35.hlsl
+PreResize8=.\expand10_240.hlsl
+PreResize9=.\sCurve.hlsl
+
+**Shader Cache dir**
+- To improve startup performance, recent mpv builds (july 2023) enable caching of compiled shaders to disk by default (ex: portable_config\cache). With vo-gpu a unique cache file called libplacebo.cache is created.
+A custom path for the directory (! write access is required) can be set in mpv.conf with: --gpu-shader-cache-dir=/shader-cache-dir or --gpu-shader-cache-dir=C:\Temp
+- mpc-be and mpc-vr do not cache compiled shaders to disk.
+- mpc-hc with evr-cp. Options (O) > Playback > Output > EVR-CP settings: x Cache compiled shaders.
+In portable mode a shadercache subfolder will be created containing the persistent .cso files. The corresponding .ini setting is CacheShaders=1.
