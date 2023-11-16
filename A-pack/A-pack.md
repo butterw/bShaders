@@ -1,11 +1,14 @@
-## [A-Pack] Video Adjustments shaders Pack. 
-Lightweight shaders for quick Adjustments of (web) video: brightness/contrast curves (tooDark, tooBright, bShadows, levels) and color adjustments (vibrance, dSat, Black&White, etc.) available for dx9 hlsl, dx11 hlsl and mpv glsl.hook.
-Open-source: https://github.com/butterw/bShaders/tree/master/A-pack
-v1.40 (2023/08): initial release by butterw.
-v1.50 (2023/11): +sCurve contrast adjustment shader 
+## [A-Pack] Video Adjustments shaders Pack (v1.50 2023/11)
+Lightweight shaders for quick Adjustments of (web) video: 
+- brightness/contrast curves (tooDark, tooBright, bShadows, levels) and color adjustments (vibrance, dSat, Black&White, etc.)
+- available for dx9 hlsl, dx11 hlsl and mpv glsl.hook.
+- Open-source: https://github.com/butterw/bShaders/tree/master/A-pack
+- v1.40 (2023/08): initial release by butterw.
+- v1.50 (2023/11): +sCurve contrast adjustment shader. 
 
 
-Shader Adjustments to quickly improve the video being viewed.
+
+### Shader Adjustments to quickly improve the video being viewed.
 
 Why Shaders ?
 - Shaders run directly on the integrated graphics (or discrete video card) and can process video pictures very fast. 
@@ -36,8 +39,7 @@ Use cases:
 - I want to watch this video in black&white, with a color filter, etc.
 
 ----
-[B]## Video Player and Renderer software[/B]
-
+## Video Player and Renderer software
 These shaders can be used in any software with user rgb pixel shader integration:
 hlsl shaders are supported by Windows players such as mpc-hc, mpc-be, etc.
 with the default renderer EVR-Custom Presenter and some other renderers such as mpc video renderer. 
@@ -84,13 +86,13 @@ To try out this shader pack, you can use a standalone video player with portable
 - Mpc-hc/be saves its configuration in Windows Registry by default, but an .ini file in the player folder can override this: For this you must put the player files in a folder where your windows user account has write access without admin elevation. So typically not in a protected Windows folders such as C:\Program Files.
 - Mpv: inside the player folder create a subfolder named portable_config where you should put your mpv.conf and input.conf configuration files. These files don't exist by default, so you may need to create them.
 
-[B]How to check whether the shaders are working ?[/B]
+**How to check whether the shaders are working ?**
 - Try the bw (black&white) shader on a color video.
 - For adjustment shaders it may not be so obvious, as only small tweaks are typically required. First pause the video, then try toggling shaders On/Off to see the difference. 
 - in mpv, the output screen is blue if there is a compilation error (likely caused by a syntax error) with an active shader.
-- in mpc-hc, you can use `Menu > Shaders > Debug Shaders... > then select the desired shader` too see if the shader compiled (if not a compilation error will be reported). Shaders which failed to compile aren't loaded.
+- in mpc-hc, you can use `Menu > Shaders > Debug Shaders... > then select the desired shader` to see if the shader compiled (if not a compilation error will be reported). Shaders which failed to compile aren't loaded.
 
-[B]mpc-hc shader presets [/B]
+**Mpc-hc shader presets**
 To get the Shaders menu featured in the A-pack screenshot, copy the following [Shaders\Presets] text block to your mpc .ini configuration file:
 [Shaders\Presets]
 0=A-Pack
@@ -121,7 +123,7 @@ PreResize6=.\tooDark.24.hlsl
 PreResize7=.\vibrance.35.hlsl
 PreResize8=.\expand10_240.hlsl
 
-[B]Shader Cache dir[/B]
+**Shader Cache dir**
 - To improve startup performance, recent mpv builds (july 2023) enable caching of compiled shaders to disk by default (ex: portable_config\cache). With vo-gpu a unique cache file called libplacebo.cache is created. 
 A custom path for the directory (! write access is required) can be set in mpv.conf with: --gpu-shader-cache-dir=/shader-cache-dir or --gpu-shader-cache-dir=C:\Temp
 - mpc-be and mpc-vr do not cache compiled shaders to disk.
