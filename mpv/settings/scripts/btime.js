@@ -1,7 +1,8 @@
 'use strict';
 
 /* --- btime.js mpv script (shortened time OSD) --- */
-/* v0.11 by butterw (2023/08) lightweight script.
+/* v0.20 by butterw (2023/11) lightweight script.
+v0.20: handle case where duration is undefined.
 use --script=path.to/btime.js OR install by copying to portable_config/scripts (tested on win10).
 
 Short time format for On-Screen-Display.
@@ -32,6 +33,7 @@ var duration;
 
 function fmt_time_str(t_str)  {
 	// shortens a time string, ex: duration
+	if (t_str === undefined) return "undefined";
 	if (t_str.substring(0, 3)== "00:") t_str=t_str.substring(3); //changes 00:01:12 to 01:12
 	//drop the leading zero, changes 01:12 to 1:12 and 01:27:09 to 1:27:09 :
 	if (t_str.charAt(0)=="0") t_str = t_str.substring(1); //mpc-hc format: comment out this line.
