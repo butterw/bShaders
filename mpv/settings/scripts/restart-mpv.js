@@ -3,11 +3,15 @@ mp.add_key_binding("Shift+F5", "restart-mpv", restart_mpv); // input.conf: Shift
 //mp.register_script_message("restart-mpv", restart_mpv);   // input.conf: Shift+F5 script-message restart-mpv
 
 /* --- restart-mpv.js (mpv script) --- */
-/* v0.20 by butterw (2023/12). tested on Win10.  
+/* v0.21 by butterw (2023/12). tested on Win10.  
 v0.20 requires mpv v0.37-dev (v0.37.0-70-g562450f5)
 v0.11 by butterw (2023/12/06), tested on Win10 with mpv 0.36 and 0.37-dev.
 
 restarts mpv: keeps current shaders (and recompiles them if the source code was modified).
+
+With mpv v0.37-dev, restart-mpv can now be done directly without any script required:
+input.conf: F5 run mpv.com --glsl-shaders=${glsl-shaders} --start=${playback-time} --pause=${pause} "${path}";
+
 */
 
 function restart_mpv() {
