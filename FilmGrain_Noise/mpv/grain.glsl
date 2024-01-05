@@ -7,7 +7,7 @@
 #define Show_Grain 0
 
 /* --- grain (mpv glsl .hook) --- */
-/* v1.01 (2023-11) released by butterw under GPLv3
+/* v1.01 (2023-11) released by butterw under GPLv3 
 Gaussian noise generation is from "semi-random grayscale noise.hlsl", (C) 2011 Jan-Willem Krans (janwillem32 <at> hotmail.com), license: GPLv2.
 (1 texture, 42 arithmetic) >> (1 texture, 38 arithmetic with Curve01:1).
 
@@ -46,7 +46,7 @@ const vec4 RandomFactors = { PI*PI*PI*PI, exp(5), pow(13, 0.5*PI), sqrt(1997) };
 
 float gshape(float x) {
     // C + (1-C)*(1 -(2*x-1)^2) = 1 + (C-1)*(2*x-1)^2  //for negative C, use: max(gshape(luma), 0)
-    return mix(1 -pow2(2*x -1), 1, Curve01);
+    return mix(1 -pow2(2*x -1), 1.0, Curve01);
 }
 
 #define counter frame
@@ -58,7 +58,7 @@ vec4 hook() {
     float grain;
     #if Show_Grain == 1
         grain = 0.25 -dot(r_in, vec4(0.125)); //in [-0.125, 0.125]
-        return 0.5 + grain;
+        return vec4(0.5 + grain);
     #endif
     grain = 0.25*noiseStrength -dot(r_in, vec4(0.125*noiseStrength)); // noiseStrength*grain
     vec4 c0 = HOOKED_texOff(0);
