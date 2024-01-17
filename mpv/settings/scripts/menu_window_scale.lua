@@ -28,7 +28,7 @@ mp.register_script_message('menu-ready', function()
     mp.commandv('script-message-to', 'dyn_menu', 'get', 'window-scale', mp.get_script_name())
 end)
 
--- if keyword is present (in input.conf), update observe window-scale property
+-- if keyword is present (in input.conf), observe property window-scale 
 mp.register_script_message('menu-get-reply', function(data)
     local reply = utils.parse_json(data)
     -- printd("reply:", reply)
