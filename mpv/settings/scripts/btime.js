@@ -5,11 +5,13 @@ var opts = {
     seek: true,
     ms: 1500,
     alt: false,
+    percent: false,
 };
 
 /* --- btime.js mpv script (short time OSD) --- */
-/* v0.30 (release) by butterw (2024/01)
+/* v0.40 (release) by butterw (2024/01/19)
 
+v0.40: added option for display with percent progress: (percent-pos%) time-pos, OR with alt: -remaining-time (percent-pos%)
 v0.30: --script-opts-add=btime-format=mpc-hc,btime-alt=yes
 or script-opts/btime.conf
 or runtime: cycle-value script-opts btime-format=mpc-hc,btime-alt=yes
@@ -49,12 +51,18 @@ playtime / duration
  - 25:01 / 1:27:09  (alt + btime)
 
 */
-var duration; //str
 mp.options.read_options(opts, "btime", on_update);
 function on_update() { //runtime update of script-opts: format, alt, ms
-    print("time format:", opts.format);
+    print("ok, time format:", opts.format);
     duration = fmt_time_str(mp.get_property_osd("duration"));
 };
+var nbsp = " ";
+function printd(pre, x){ print(pre, JSON.stringify(x)) } //printd("x:", x)
+var duration; //str
+
+mp.register_event("file-loaded", function() { // every time a new file is loaded, process the duration string
+    duration = fmt_time_str(mp.get_property_osd("duration"));
+});
 
 function fmt_time_str(t_str) {
     // shortens a time string, ex: duration
@@ -69,10 +77,6 @@ function fmt_time_str(t_str) {
     return t_str;
 }
 
-mp.register_event("file-loaded", function() { // every time a new file is loaded, process the duration string
-    duration = fmt_time_str(mp.get_property_osd("duration"));
-});
-
 mp.add_key_binding(null, "show", show);// input.conf: F11 script-binding btime/show
 if (opts.seek) mp.register_event("seek", show);
 function show() {
@@ -85,6 +89,13 @@ function show() {
             if (opts.format=="btime" && (duration.length==7 && playtime.charAt(0)=="0")) playtime = playtime.substring(2); //btime (playtime): drop leading zero on hours, 00:06:04 to 06:04 / 1:27:09
         }
     }
-    playtime = "".concat(opts.alt ? "- ": "", playtime, " / ", duration);
+    if (opts.percent) {
+        var percent = mp.get_property_osd("percent-pos", "");
+        // if (percent) percent = "".concat("(", percent.length==1 ? "0": "", percent, "%) "); //ex: "(08%) "
+        // playtime = "".concat(opts.alt ? "-": "", percent, playtime);
+        if (percent) percent = "".concat(" (", percent.length==1 ? "0": "", percent, "%)"); //ex: "(08%) "
+        playtime = "".concat(opts.alt ? "-": "", playtime, percent);
+    }
+    else playtime = "".concat(opts.alt ? "-": "", playtime, " / ", duration); // format the time display
     mp.commandv("show-text", playtime, opts.ms); // display on OSD (message duration: ms)
 }
